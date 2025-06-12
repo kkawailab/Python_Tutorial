@@ -1,204 +1,372 @@
 #!/usr/bin/env python3
 """
 NumPyチュートリアルをHTMLに変換するスクリプト
+他のチュートリアルと同じPygments構文ハイライトを使用
 """
 
-import re
+import markdown
+from pygments.formatters import HtmlFormatter
 
 def convert_markdown_to_html(md_content):
-    """MarkdownをHTMLに変換"""
+    """MarkdownをHTMLに変換（Pygmentsスタイル付き）"""
+    
+    # Markdown拡張機能の設定
+    extensions = [
+        'markdown.extensions.fenced_code',
+        'markdown.extensions.codehilite',
+        'markdown.extensions.tables',
+        'markdown.extensions.toc',
+        'markdown.extensions.nl2br',
+        'markdown.extensions.attr_list'
+    ]
+    
+    extension_configs = {
+        'markdown.extensions.codehilite': {
+            'use_pygments': True,
+            'css_class': 'highlight',
+            'linenums': False,
+            'guess_lang': True
+        },
+        'markdown.extensions.toc': {
+            'title': '目次',
+            'toc_depth': 3
+        }
+    }
+    
+    # MarkdownをHTMLに変換
+    md = markdown.Markdown(
+        extensions=extensions,
+        extension_configs=extension_configs
+    )
+    html_body = md.convert(md_content)
+    
+    # Pygmentsのスタイルを取得（monokaiスタイル）
+    formatter = HtmlFormatter(style='monokai', linenos=False, cssclass='highlight')
+    css_styles = formatter.get_style_defs('.highlight')
     
     # HTMLテンプレート
-    html_template = """<!DOCTYPE html>
+    html_template = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NumPy完全チュートリアル</title>
     <style>
+        /* リセットCSS */
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        /* ベーススタイル */
         body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', 'Yu Gothic', 'Meiryo', sans-serif;
+            line-height: 1.8;
             color: #333;
+            background-color: #f5f5f5;
+            padding: 0;
+            margin: 0;
+        }}
+        
+        /* コンテナ */
+        .container {{
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }}
-        .container {{
+            padding: 2rem;
             background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            min-height: 100vh;
         }}
+        
+        /* 見出し */
         h1 {{
             color: #2c3e50;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
             border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
+            font-size: 2.5rem;
         }}
+        
         h2 {{
-            color: #2c3e50;
-            margin-top: 40px;
+            color: #34495e;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.3rem;
             border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
+            font-size: 2rem;
         }}
+        
         h3 {{
             color: #34495e;
-            margin-top: 30px;
+            margin: 1.5rem 0 0.5rem 0;
+            font-size: 1.5rem;
         }}
-        code {{
-            background-color: #f8f8f8;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 0.9em;
+        
+        h4 {{
+            color: #34495e;
+            margin: 1rem 0 0.5rem 0;
+            font-size: 1.2rem;
         }}
+        
+        /* 段落 */
+        p {{
+            margin: 1rem 0;
+            text-align: justify;
+        }}
+        
+        /* リスト */
+        ul, ol {{
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }}
+        
+        li {{
+            margin: 0.5rem 0;
+        }}
+        
+        /* コードブロック */
         pre {{
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 15px;
+            background-color: #272822;
             border-radius: 5px;
+            padding: 1rem;
             overflow-x: auto;
-            line-height: 1.4;
+            margin: 1rem 0;
         }}
-        pre code {{
-            background-color: transparent;
-            padding: 0;
-            color: #ecf0f1;
+        
+        .highlight {{
+            background-color: transparent !important;
         }}
-        .toc {{
-            background-color: #ecf0f1;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 30px;
+        
+        /* インラインコード */
+        code:not(.highlight) {{
+            background-color: #f0f0f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e74c3c;
         }}
-        .toc h2 {{
-            margin-top: 0;
-            color: #2c3e50;
-        }}
-        .toc ul {{
-            list-style-type: none;
-            padding-left: 0;
-        }}
-        .toc li {{
-            margin: 5px 0;
-        }}
-        .toc a {{
-            color: #3498db;
-            text-decoration: none;
-        }}
-        .toc a:hover {{
-            text-decoration: underline;
-        }}
-        .note {{
-            background-color: #e8f4f8;
-            border-left: 4px solid #3498db;
-            padding: 10px 15px;
-            margin: 20px 0;
-            border-radius: 0 5px 5px 0;
-        }}
-        .warning {{
-            background-color: #fcf8e3;
-            border-left: 4px solid #f39c12;
-            padding: 10px 15px;
-            margin: 20px 0;
-            border-radius: 0 5px 5px 0;
-        }}
+        
+        /* Pygments構文ハイライトスタイル */
+        {css_styles}
+        
+        /* テーブル */
         table {{
             border-collapse: collapse;
             width: 100%;
-            margin: 20px 0;
+            margin: 1rem 0;
         }}
+        
         th, td {{
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 0.5rem;
             text-align: left;
         }}
+        
         th {{
             background-color: #3498db;
             color: white;
+            font-weight: bold;
         }}
+        
         tr:nth-child(even) {{
-            background-color: #f2f2f2;
+            background-color: #f9f9f9;
         }}
-        .highlight {{
+        
+        /* リンク */
+        a {{
+            color: #3498db;
+            text-decoration: none;
+        }}
+        
+        a:hover {{
+            text-decoration: underline;
+        }}
+        
+        /* 引用 */
+        blockquote {{
+            border-left: 4px solid #3498db;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #666;
+        }}
+        
+        /* 目次 */
+        .toc {{
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }}
+        
+        .toc > ul {{
+            list-style-type: none;
+            padding-left: 0;
+        }}
+        
+        .toc ul ul {{
+            padding-left: 1.5rem;
+        }}
+        
+        .toc li {{
+            margin: 0.3rem 0;
+        }}
+        
+        .toc a {{
+            color: #495057;
+        }}
+        
+        .toc a:hover {{
+            color: #3498db;
+        }}
+        
+        /* 注意・警告ボックス */
+        .note {{
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }}
+        
+        .warning {{
             background-color: #fff3cd;
-            padding: 2px 4px;
-            border-radius: 3px;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
         }}
-        .back-to-top {{
+        
+        /* レスポンシブデザイン */
+        @media (max-width: 768px) {{
+            .container {{
+                padding: 1rem;
+            }}
+            
+            h1 {{
+                font-size: 2rem;
+            }}
+            
+            h2 {{
+                font-size: 1.5rem;
+            }}
+            
+            pre {{
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }}
+            
+            table {{
+                font-size: 0.9rem;
+            }}
+        }}
+        
+        /* ナビゲーション */
+        .nav {{
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }}
+        
+        .nav a {{
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }}
+        
+        /* スクロールトップボタン */
+        .scroll-top {{
             position: fixed;
             bottom: 20px;
             right: 20px;
             background-color: #3498db;
             color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
             text-decoration: none;
-            display: none;
         }}
-        .back-to-top:hover {{
+        
+        .scroll-top.visible {{
+            opacity: 1;
+        }}
+        
+        .scroll-top:hover {{
             background-color: #2980b9;
+            text-decoration: none;
         }}
-        ul li {{
-            margin: 5px 0;
-        }}
-        @media (max-width: 768px) {{
-            body {{
-                padding: 10px;
-            }}
-            .container {{
-                padding: 20px;
-            }}
-            pre {{
-                font-size: 0.85em;
-            }}
+        
+        /* フッター */
+        .footer {{
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ecf0f1;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
         }}
     </style>
 </head>
 <body>
-    <div class="container">
-        {content}
+    <div class="nav">
+        <a href="index.html">ホーム</a>
+        <a href="Python_Beginner_Tutorial_Complete.html">Python初級</a>
+        <a href="Flask_Tutorial_Complete.html">Flask</a>
     </div>
-    <a href="#top" class="back-to-top">↑ トップへ</a>
+    
+    <div class="container">
+        {html_body}
+        
+        <div class="footer">
+            <p>NumPy完全チュートリアル - Pythonで科学計算をマスターしよう</p>
+            <p>&copy; 2024 Python Tutorial. All rights reserved.</p>
+        </div>
+    </div>
+    
+    <a href="#" class="scroll-top" id="scrollTop">↑</a>
+    
     <script>
-        // シンタックスハイライト用の簡単な処理
-        document.addEventListener('DOMContentLoaded', function() {{
-            // Python キーワードのハイライト
-            const keywords = ['import', 'from', 'def', 'class', 'return', 'if', 'else', 'elif', 
-                            'for', 'while', 'in', 'True', 'False', 'None', 'and', 'or', 'not',
-                            'try', 'except', 'finally', 'with', 'as', 'pass', 'break', 'continue',
-                            'print', 'np', 'numpy', 'array', 'shape', 'dtype'];
-            
-            const codeBlocks = document.querySelectorAll('pre code');
-            codeBlocks.forEach(block => {{
-                let html = block.innerHTML;
-                
-                // 文字列をハイライト（シングルクォートとダブルクォート）
-                html = html.replace(/('[^']*'|"[^"]*")/g, '<span style="color: #e74c3c;">$1</span>');
-                
-                // 数値をハイライト
-                html = html.replace(/\b(\d+\.?\d*)\b/g, '<span style="color: #e67e22;">$1</span>');
-                
-                // コメントをハイライト
-                html = html.replace(/(#[^\n]*)/g, '<span style="color: #95a5a6;">$1</span>');
-                
-                // キーワードをハイライト
-                keywords.forEach(keyword => {{
-                    const regex = new RegExp('\\b(' + keyword + ')\\b', 'g');
-                    html = html.replace(regex, '<span style="color: #3498db; font-weight: bold;">$1</span>');
-                }});
-                
-                block.innerHTML = html;
+        // スクロールトップボタンの表示/非表示
+        window.addEventListener('scroll', function() {{
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.pageYOffset > 200) {{
+                scrollTop.classList.add('visible');
+            }} else {{
+                scrollTop.classList.remove('visible');
+            }}
+        }});
+        
+        // スムーズスクロール
+        document.getElementById('scrollTop').addEventListener('click', function(e) {{
+            e.preventDefault();
+            window.scrollTo({{
+                top: 0,
+                behavior: 'smooth'
             }});
-            
-            // スクロールでトップへ戻るボタンの表示/非表示
-            const backToTop = document.querySelector('.back-to-top');
-            window.addEventListener('scroll', function() {{
-                if (window.pageYOffset > 300) {{
-                    backToTop.style.display = 'block';
-                }} else {{
-                    backToTop.style.display = 'none';
+        }});
+        
+        // 目次のスムーズスクロール
+        document.querySelectorAll('.toc a').forEach(anchor => {{
+            anchor.addEventListener('click', function(e) {{
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {{
+                    targetElement.scrollIntoView({{
+                        behavior: 'smooth',
+                        block: 'start'
+                    }});
                 }}
             }});
         }});
@@ -206,89 +374,7 @@ def convert_markdown_to_html(md_content):
 </body>
 </html>"""
     
-    # コードブロックを一時的に保護
-    code_blocks = []
-    def save_code_block(match):
-        code_blocks.append(match.group(0))
-        return f"__CODE_BLOCK_{len(code_blocks)-1}__"
-    
-    # ```で囲まれたコードブロックを保護
-    html = re.sub(r'```[\s\S]*?```', save_code_block, md_content)
-    
-    # 見出しの変換
-    html = re.sub(r'^### (.*?)$', r'<h3>\1</h3>', html, flags=re.MULTILINE)
-    html = re.sub(r'^## (.*?)$', r'<h2>\1</h2>', html, flags=re.MULTILINE)
-    html = re.sub(r'^# (.*?)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
-    
-    # リストの変換
-    html = re.sub(r'^\* (.*?)$', r'<li>\1</li>', html, flags=re.MULTILINE)
-    html = re.sub(r'^\- (.*?)$', r'<li>\1</li>', html, flags=re.MULTILINE)
-    html = re.sub(r'^\d+\. (.*?)$', r'<li>\1</li>', html, flags=re.MULTILINE)
-    
-    # 連続するリストアイテムをulタグで囲む
-    html = re.sub(r'(<li>.*?</li>\n?)+', lambda m: '<ul>\n' + m.group(0) + '</ul>\n', html)
-    
-    # 太字と斜体
-    html = re.sub(r'\*\*\*(.*?)\*\*\*', r'<strong><em>\1</em></strong>', html)
-    html = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', html)
-    html = re.sub(r'\*(.*?)\*', r'<em>\1</em>', html)
-    
-    # インラインコード
-    html = re.sub(r'`([^`]+)`', r'<code>\1</code>', html)
-    
-    # リンク
-    html = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2">\1</a>', html)
-    
-    # 改行を<br>に変換（ただし、タグの後は除く）
-    html = re.sub(r'(?<!>)\n(?!<)', '<br>\n', html)
-    
-    # 段落の処理
-    html = re.sub(r'\n\n+', '</p>\n<p>', html)
-    html = '<p>' + html + '</p>'
-    
-    # 不要な<p>タグを削除
-    html = re.sub(r'<p>(<h[1-6]>)', r'\1', html)
-    html = re.sub(r'(</h[1-6]>)</p>', r'\1', html)
-    html = re.sub(r'<p>(<ul>)', r'\1', html)
-    html = re.sub(r'(</ul>)</p>', r'\1', html)
-    html = re.sub(r'<p></p>', '', html)
-    
-    # コードブロックを復元
-    for i, code_block in enumerate(code_blocks):
-        # ```python などの言語指定を削除
-        code_content = re.sub(r'^```\w*\n', '', code_block)
-        code_content = re.sub(r'\n```$', '', code_content)
-        # HTMLエスケープ
-        code_content = code_content.replace('&', '&amp;')
-        code_content = code_content.replace('<', '&lt;')
-        code_content = code_content.replace('>', '&gt;')
-        html = html.replace(f"__CODE_BLOCK_{i}__", f'<pre><code>{code_content}</code></pre>')
-    
-    # 目次のリンクを修正
-    def make_anchor(title):
-        # 日本語を含むアンカーリンクの生成
-        anchor = re.sub(r'[^\w\s-]', '', title.lower())
-        anchor = re.sub(r'[-\s]+', '-', anchor)
-        return anchor
-    
-    # 見出しにIDを追加
-    def add_heading_id(match):
-        level = match.group(1)
-        title = match.group(2)
-        anchor = make_anchor(title)
-        # 日本語の場合は連番を使用
-        if not anchor or anchor == '-':
-            anchor = f"section-{add_heading_id.counter}"
-            add_heading_id.counter += 1
-        return f'<h{level} id="{anchor}">{title}</h{level}>'
-    
-    add_heading_id.counter = 1
-    html = re.sub(r'<h([1-6])>(.*?)</h\1>', add_heading_id, html)
-    
-    # HTMLテンプレートに組み込む
-    final_html = html_template.format(content=html)
-    
-    return final_html
+    return html_template
 
 def main():
     # MarkdownファイルをHTMLに変換

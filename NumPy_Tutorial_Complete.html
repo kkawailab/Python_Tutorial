@@ -5,151 +5,367 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NumPy完全チュートリアル</title>
     <style>
+        /* リセットCSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* ベーススタイル */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', 'Yu Gothic', 'Meiryo', sans-serif;
+            line-height: 1.8;
             color: #333;
+            background-color: #f5f5f5;
+            padding: 0;
+            margin: 0;
+        }
+        
+        /* コンテナ */
+        .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
+            padding: 2rem;
             background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            min-height: 100vh;
         }
+        
+        /* 見出し */
         h1 {
             color: #2c3e50;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
             border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
+            font-size: 2.5rem;
         }
+        
         h2 {
-            color: #2c3e50;
-            margin-top: 40px;
+            color: #34495e;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.3rem;
             border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
+            font-size: 2rem;
         }
+        
         h3 {
             color: #34495e;
-            margin-top: 30px;
+            margin: 1.5rem 0 0.5rem 0;
+            font-size: 1.5rem;
         }
-        code {
-            background-color: #f8f8f8;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 0.9em;
+        
+        h4 {
+            color: #34495e;
+            margin: 1rem 0 0.5rem 0;
+            font-size: 1.2rem;
         }
+        
+        /* 段落 */
+        p {
+            margin: 1rem 0;
+            text-align: justify;
+        }
+        
+        /* リスト */
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        /* コードブロック */
         pre {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 15px;
+            background-color: #272822;
             border-radius: 5px;
+            padding: 1rem;
             overflow-x: auto;
-            line-height: 1.4;
+            margin: 1rem 0;
         }
-        pre code {
-            background-color: transparent;
-            padding: 0;
-            color: #ecf0f1;
+        
+        .highlight {
+            background-color: transparent !important;
         }
-        .toc {
-            background-color: #ecf0f1;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 30px;
+        
+        /* インラインコード */
+        code:not(.highlight) {
+            background-color: #f0f0f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e74c3c;
         }
-        .toc h2 {
-            margin-top: 0;
-            color: #2c3e50;
-        }
-        .toc ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        .toc li {
-            margin: 5px 0;
-        }
-        .toc a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        .toc a:hover {
-            text-decoration: underline;
-        }
-        .note {
-            background-color: #e8f4f8;
-            border-left: 4px solid #3498db;
-            padding: 10px 15px;
-            margin: 20px 0;
-            border-radius: 0 5px 5px 0;
-        }
-        .warning {
-            background-color: #fcf8e3;
-            border-left: 4px solid #f39c12;
-            padding: 10px 15px;
-            margin: 20px 0;
-            border-radius: 0 5px 5px 0;
-        }
+        
+        /* Pygments構文ハイライトスタイル */
+        pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #49483e }
+.highlight { background: #272822; color: #F8F8F2 }
+.highlight .c { color: #959077 } /* Comment */
+.highlight .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.highlight .esc { color: #F8F8F2 } /* Escape */
+.highlight .g { color: #F8F8F2 } /* Generic */
+.highlight .k { color: #66D9EF } /* Keyword */
+.highlight .l { color: #AE81FF } /* Literal */
+.highlight .n { color: #F8F8F2 } /* Name */
+.highlight .o { color: #FF4689 } /* Operator */
+.highlight .x { color: #F8F8F2 } /* Other */
+.highlight .p { color: #F8F8F2 } /* Punctuation */
+.highlight .ch { color: #959077 } /* Comment.Hashbang */
+.highlight .cm { color: #959077 } /* Comment.Multiline */
+.highlight .cp { color: #959077 } /* Comment.Preproc */
+.highlight .cpf { color: #959077 } /* Comment.PreprocFile */
+.highlight .c1 { color: #959077 } /* Comment.Single */
+.highlight .cs { color: #959077 } /* Comment.Special */
+.highlight .gd { color: #FF4689 } /* Generic.Deleted */
+.highlight .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #F8F8F2 } /* Generic.Error */
+.highlight .gh { color: #F8F8F2 } /* Generic.Heading */
+.highlight .gi { color: #A6E22E } /* Generic.Inserted */
+.highlight .go { color: #66D9EF } /* Generic.Output */
+.highlight .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #959077 } /* Generic.Subheading */
+.highlight .gt { color: #F8F8F2 } /* Generic.Traceback */
+.highlight .kc { color: #66D9EF } /* Keyword.Constant */
+.highlight .kd { color: #66D9EF } /* Keyword.Declaration */
+.highlight .kn { color: #FF4689 } /* Keyword.Namespace */
+.highlight .kp { color: #66D9EF } /* Keyword.Pseudo */
+.highlight .kr { color: #66D9EF } /* Keyword.Reserved */
+.highlight .kt { color: #66D9EF } /* Keyword.Type */
+.highlight .ld { color: #E6DB74 } /* Literal.Date */
+.highlight .m { color: #AE81FF } /* Literal.Number */
+.highlight .s { color: #E6DB74 } /* Literal.String */
+.highlight .na { color: #A6E22E } /* Name.Attribute */
+.highlight .nb { color: #F8F8F2 } /* Name.Builtin */
+.highlight .nc { color: #A6E22E } /* Name.Class */
+.highlight .no { color: #66D9EF } /* Name.Constant */
+.highlight .nd { color: #A6E22E } /* Name.Decorator */
+.highlight .ni { color: #F8F8F2 } /* Name.Entity */
+.highlight .ne { color: #A6E22E } /* Name.Exception */
+.highlight .nf { color: #A6E22E } /* Name.Function */
+.highlight .nl { color: #F8F8F2 } /* Name.Label */
+.highlight .nn { color: #F8F8F2 } /* Name.Namespace */
+.highlight .nx { color: #A6E22E } /* Name.Other */
+.highlight .py { color: #F8F8F2 } /* Name.Property */
+.highlight .nt { color: #FF4689 } /* Name.Tag */
+.highlight .nv { color: #F8F8F2 } /* Name.Variable */
+.highlight .ow { color: #FF4689 } /* Operator.Word */
+.highlight .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.highlight .w { color: #F8F8F2 } /* Text.Whitespace */
+.highlight .mb { color: #AE81FF } /* Literal.Number.Bin */
+.highlight .mf { color: #AE81FF } /* Literal.Number.Float */
+.highlight .mh { color: #AE81FF } /* Literal.Number.Hex */
+.highlight .mi { color: #AE81FF } /* Literal.Number.Integer */
+.highlight .mo { color: #AE81FF } /* Literal.Number.Oct */
+.highlight .sa { color: #E6DB74 } /* Literal.String.Affix */
+.highlight .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.highlight .sc { color: #E6DB74 } /* Literal.String.Char */
+.highlight .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.highlight .sd { color: #E6DB74 } /* Literal.String.Doc */
+.highlight .s2 { color: #E6DB74 } /* Literal.String.Double */
+.highlight .se { color: #AE81FF } /* Literal.String.Escape */
+.highlight .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.highlight .si { color: #E6DB74 } /* Literal.String.Interpol */
+.highlight .sx { color: #E6DB74 } /* Literal.String.Other */
+.highlight .sr { color: #E6DB74 } /* Literal.String.Regex */
+.highlight .s1 { color: #E6DB74 } /* Literal.String.Single */
+.highlight .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.highlight .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #A6E22E } /* Name.Function.Magic */
+.highlight .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.highlight .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.highlight .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.highlight .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.highlight .il { color: #AE81FF } /* Literal.Number.Integer.Long */
+        
+        /* テーブル */
         table {
             border-collapse: collapse;
             width: 100%;
-            margin: 20px 0;
+            margin: 1rem 0;
         }
+        
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 0.5rem;
             text-align: left;
         }
+        
         th {
             background-color: #3498db;
             color: white;
+            font-weight: bold;
         }
+        
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f9f9f9;
         }
-        .highlight {
+        
+        /* リンク */
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid #3498db;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #666;
+        }
+        
+        /* 目次 */
+        .toc {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .toc > ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .toc ul ul {
+            padding-left: 1.5rem;
+        }
+        
+        .toc li {
+            margin: 0.3rem 0;
+        }
+        
+        .toc a {
+            color: #495057;
+        }
+        
+        .toc a:hover {
+            color: #3498db;
+        }
+        
+        /* 注意・警告ボックス */
+        .note {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .warning {
             background-color: #fff3cd;
-            padding: 2px 4px;
-            border-radius: 3px;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
         }
-        .back-to-top {
+        
+        /* レスポンシブデザイン */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            pre {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* ナビゲーション */
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav a {
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        /* スクロールトップボタン */
+        .scroll-top {
             position: fixed;
             bottom: 20px;
             right: 20px;
             background-color: #3498db;
             color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
             text-decoration: none;
-            display: none;
         }
-        .back-to-top:hover {
+        
+        .scroll-top.visible {
+            opacity: 1;
+        }
+        
+        .scroll-top:hover {
             background-color: #2980b9;
+            text-decoration: none;
         }
-        ul li {
-            margin: 5px 0;
-        }
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 20px;
-            }
-            pre {
-                font-size: 0.85em;
-            }
+        
+        /* フッター */
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ecf0f1;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
+    <div class="nav">
+        <a href="index.html">ホーム</a>
+        <a href="Python_Beginner_Tutorial_Complete.html">Python初級</a>
+        <a href="Flask_Tutorial_Complete.html">Flask</a>
+    </div>
+    
     <div class="container">
-        <h1 id="numpy完全チュートリアル">NumPy完全チュートリアル</h1>
-<h2 id="目次">目次</h2>
-<ul>
+        <h1 id="numpy">NumPy完全チュートリアル</h1>
+<h2 id="_1">目次</h2>
+<ol>
 <li><a href="#1-numpyとは">NumPyとは</a></li>
 <li><a href="#2-numpyのインストールと基本設定">NumPyのインストールと基本設定</a></li>
 <li><a href="#3-numpy配列ndarrayの基礎">NumPy配列（ndarray）の基礎</a></li>
@@ -162,11 +378,10 @@
 <li><a href="#10-線形代数">線形代数</a></li>
 <li><a href="#11-ファイル入出力">ファイル入出力</a></li>
 <li><a href="#12-実践的な応用例">実践的な応用例</a></li>
-</ul>
-<h2 id="1-numpyとは">1. NumPyとは</h2>
-<br>
-NumPyは「Numerical Python」の略で、Pythonで科学計算を行うための基礎的なライブラリです。高速な多次元配列操作と、それらの配列を操作するための高度な関数を提供します。<br></p>
-<h3 id="numpyの特徴">NumPyの特徴</h3>
+</ol>
+<h2 id="1-numpy">1. NumPyとは</h2>
+<p>NumPyは「Numerical Python」の略で、Pythonで科学計算を行うための基礎的なライブラリです。高速な多次元配列操作と、それらの配列を操作するための高度な関数を提供します。</p>
+<h3 id="numpy_1">NumPyの特徴</h3>
 <ul>
 <li><strong>高速な配列処理</strong>: C言語で実装されており、Pythonのリストよりも高速</li>
 <li><strong>多次元配列</strong>: 1次元から多次元まで柔軟に扱える</li>
@@ -174,701 +389,730 @@ NumPyは「Numerical Python」の略で、Pythonで科学計算を行うため�
 <li><strong>ブロードキャスティング</strong>: 異なる形状の配列同士の演算を効率的に実行</li>
 <li><strong>メモリ効率</strong>: 連続したメモリ領域に配列を格納</li>
 </ul>
-<h3 id="なぜnumpyを使うのか">なぜNumPyを使うのか？</h3>
-<br>
-<pre><code># Pythonリストでの計算（遅い）
-python_list = list(range(1000000))
-result = [x * 2 for x in python_list]
+<h3 id="numpy_2">なぜNumPyを使うのか？</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Pythonリストでの計算（遅い）</span>
+<span class="n">python_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">))</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">python_list</span><span class="p">]</span>
 
-# NumPyでの計算（高速）
-import numpy as np
-numpy_array = np.arange(1000000)
-result = numpy_array * 2</code></pre><br></p>
-<h2 id="2-numpyのインストールと基本設定">2. NumPyのインストールと基本設定</h2>
-<h3 id="インストール">インストール</h3>
-<br>
-<pre><code>pip install numpy</code></pre><br></p>
-<h3 id="インポートと基本設定">インポートと基本設定</h3>
-<br>
-<pre><code>import numpy as np
+<span class="c1"># NumPyでの計算（高速）</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">numpy_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">numpy_array</span> <span class="o">*</span> <span class="mi">2</span>
+</code></pre></div>
 
-# バージョン確認
-print(np.__version__)
+<h2 id="2-numpy">2. NumPyのインストールと基本設定</h2>
+<h3 id="_2">インストール</h3>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>numpy
+</code></pre></div>
 
-# 表示設定
-np.set_printoptions(precision=3)  # 小数点以下3桁表示
-np.set_printoptions(suppress=True)  # 科学的記数法を抑制</code></pre><br></p>
-<h2 id="3-numpy配列ndarrayの基礎">3. NumPy配列（ndarray）の基礎</h2>
-<h3 id="ndarrayオブジェクト">ndarrayオブジェクト</h3>
-<br>
-NumPyの中核となるのは<code>ndarray</code>（N-dimensional array）オブジェクトです。<br>
-<br>
-<pre><code>import numpy as np
+<h3 id="_3">インポートと基本設定</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-# 1次元配列
-arr1d = np.array([1, 2, 3, 4, 5])
-print(f"1次元配列: {arr1d}")
-print(f"形状: {arr1d.shape}")
-print(f"次元数: {arr1d.ndim}")
-print(f"データ型: {arr1d.dtype}")
+<span class="c1"># バージョン確認</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 
-# 2次元配列
-arr2d = np.array([[1, 2, 3], [4, 5, 6]])
-print(f"\n2次元配列:\n{arr2d}")
-print(f"形状: {arr2d.shape}")
-print(f"次元数: {arr2d.ndim}")
+<span class="c1"># 表示設定</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># 小数点以下3桁表示</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># 科学的記数法を抑制</span>
+</code></pre></div>
 
-# 3次元配列
-arr3d = np.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
-print(f"\n3次元配列:\n{arr3d}")
-print(f"形状: {arr3d.shape}")
-print(f"次元数: {arr3d.ndim}")</code></pre><br></p>
-<h3 id="データ型dtype">データ型（dtype）</h3>
-<br>
-<pre><code># 整数型
-int_array = np.array([1, 2, 3], dtype=np.int32)
-print(f"int32: {int_array.dtype}")
+<h2 id="3-numpyndarray">3. NumPy配列（ndarray）の基礎</h2>
+<h3 id="ndarray">ndarrayオブジェクト</h3>
+<p>NumPyの中核となるのは<code>ndarray</code>（N-dimensional array）オブジェクトです。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-# 浮動小数点型
-float_array = np.array([1.0, 2.0, 3.0], dtype=np.float64)
-print(f"float64: {float_array.dtype}")
+<span class="c1"># 1次元配列</span>
+<span class="n">arr1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;1次元配列: </span><span class="si">{</span><span class="n">arr1d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;形状: </span><span class="si">{</span><span class="n">arr1d</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;次元数: </span><span class="si">{</span><span class="n">arr1d</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;データ型: </span><span class="si">{</span><span class="n">arr1d</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 複素数型
-complex_array = np.array([1+2j, 3+4j], dtype=np.complex128)
-print(f"complex128: {complex_array.dtype}")
+<span class="c1"># 2次元配列</span>
+<span class="n">arr2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2次元配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr2d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;形状: </span><span class="si">{</span><span class="n">arr2d</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;次元数: </span><span class="si">{</span><span class="n">arr2d</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# ブール型
-bool_array = np.array([True, False, True], dtype=np.bool_)
-print(f"bool: {bool_array.dtype}")</code></pre><br></p>
-<h2 id="4-配列の作成と初期化">4. 配列の作成と初期化</h2>
-<h3 id="基本的な配列作成">基本的な配列作成</h3>
-<br>
-<pre><code># ゼロで初期化
-zeros = np.zeros((3, 4))
-print(f"ゼロ配列:\n{zeros}")
+<span class="c1"># 3次元配列</span>
+<span class="n">arr3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3次元配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr3d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;形状: </span><span class="si">{</span><span class="n">arr3d</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;次元数: </span><span class="si">{</span><span class="n">arr3d</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 1で初期化
-ones = np.ones((2, 3))
-print(f"\n1の配列:\n{ones}")
+<h3 id="dtype">データ型（dtype）</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 整数型</span>
+<span class="n">int_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;int32: </span><span class="si">{</span><span class="n">int_array</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 特定の値で初期化
-full = np.full((2, 2), 7)
-print(f"\n7で満たされた配列:\n{full}")
+<span class="c1"># 浮動小数点型</span>
+<span class="n">float_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;float64: </span><span class="si">{</span><span class="n">float_array</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 単位行列
-eye = np.eye(3)
-print(f"\n単位行列:\n{eye}")
+<span class="c1"># 複素数型</span>
+<span class="n">complex_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="n">j</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;complex128: </span><span class="si">{</span><span class="n">complex_array</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 対角行列
-diag = np.diag([1, 2, 3, 4])
-print(f"\n対角行列:\n{diag}")</code></pre><br></p>
-<h3 id="連続した値の配列">連続した値の配列</h3>
-<br>
-<pre><code># arange（範囲指定）
-arr1 = np.arange(10)
-print(f"0から9: {arr1}")
+<span class="c1"># ブール型</span>
+<span class="n">bool_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;bool: </span><span class="si">{</span><span class="n">bool_array</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-arr2 = np.arange(2, 10, 2)
-print(f"2から9まで2刻み: {arr2}")
+<h2 id="4">4. 配列の作成と初期化</h2>
+<h3 id="_4">基本的な配列作成</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># ゼロで初期化</span>
+<span class="n">zeros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ゼロ配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">zeros</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# linspace（要素数指定）
-arr3 = np.linspace(0, 1, 5)
-print(f"0から1まで5要素: {arr3}")
+<span class="c1"># 1で初期化</span>
+<span class="n">ones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">ones</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# logspace（対数スケール）
-arr4 = np.logspace(0, 2, 4)
-print(f"10^0から10^2まで4要素: {arr4}")</code></pre><br></p>
-<h3 id="ランダム配列">ランダム配列</h3>
-<br>
-<pre><code># 乱数のシード設定（再現性のため）
-np.random.seed(42)
+<span class="c1"># 特定の値で初期化</span>
+<span class="n">full</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">7で満たされた配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">full</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 一様分布（0から1）
-uniform = np.random.rand(3, 3)
-print(f"一様分布:\n{uniform}")
+<span class="c1"># 単位行列</span>
+<span class="n">eye</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">単位行列:</span><span class="se">\n</span><span class="si">{</span><span class="n">eye</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 正規分布
-normal = np.random.randn(3, 3)
-print(f"\n正規分布:\n{normal}")
+<span class="c1"># 対角行列</span>
+<span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">対角行列:</span><span class="se">\n</span><span class="si">{</span><span class="n">diag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 整数の乱数
-integers = np.random.randint(0, 10, size=(3, 3))
-print(f"\n整数乱数:\n{integers}")
+<h3 id="_5">連続した値の配列</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># arange（範囲指定）</span>
+<span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;0から9: </span><span class="si">{</span><span class="n">arr1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 配列のシャッフル
-arr = np.arange(10)
-np.random.shuffle(arr)
-print(f"\nシャッフル後: {arr}")</code></pre><br></p>
-<h2 id="5-配列の操作とインデックス">5. 配列の操作とインデックス</h2>
-<h3 id="基本的なインデックス">基本的なインデックス</h3>
-<br>
-<pre><code># 1次元配列
-arr1d = np.array([10, 20, 30, 40, 50])
-print(f"3番目の要素: {arr1d[2]}")
-print(f"最後の要素: {arr1d[-1]}")
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2から9まで2刻み: </span><span class="si">{</span><span class="n">arr2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 2次元配列
-arr2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-print(f"\n2行3列目: {arr2d[1, 2]}")
-print(f"2行目全体: {arr2d[1]}")
-print(f"3列目全体: {arr2d[:, 2]}")</code></pre><br></p>
-<h3 id="スライシング">スライシング</h3>
-<br>
-<pre><code># 1次元スライシング
-arr = np.arange(10)
-print(f"インデックス2から5: {arr[2:6]}")
-print(f"偶数インデックス: {arr[::2]}")
-print(f"逆順: {arr[::-1]}")
+<span class="c1"># linspace（要素数指定）</span>
+<span class="n">arr3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;0から1まで5要素: </span><span class="si">{</span><span class="n">arr3</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 2次元スライシング
-arr2d = np.arange(20).reshape(4, 5)
-print(f"\n元の配列:\n{arr2d}")
-print(f"\n左上2x2:\n{arr2d[:2, :2]}")
-print(f"\n右下2x2:\n{arr2d[-2:, -2:]}")</code></pre><br></p>
-<h3 id="ブールインデックス">ブールインデックス</h3>
-<br>
-<pre><code>arr = np.array([1, -2, 3, -4, 5])
+<span class="c1"># logspace（対数スケール）</span>
+<span class="n">arr4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;10^0から10^2まで4要素: </span><span class="si">{</span><span class="n">arr4</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 条件に基づく選択
-mask = arr &gt; 0
-print(f"正の要素のマスク: {mask}")
-print(f"正の要素: {arr[mask]}")
+<h3 id="_6">ランダム配列</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 乱数のシード設定（再現性のため）</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 
-# 複数条件
-arr2d = np.random.randint(-10, 10, size=(5, 5))
-print(f"\n元の配列:\n{arr2d}")
+<span class="c1"># 一様分布（0から1）</span>
+<span class="n">uniform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;一様分布:</span><span class="se">\n</span><span class="si">{</span><span class="n">uniform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# -5から5の間の要素
-mask = (arr2d &gt; -5) &amp; (arr2d &lt; 5)
-print(f"\n-5&lt;x&lt;5の要素: {arr2d[mask]}")</code></pre><br></p>
-<h3 id="ファンシーインデックス">ファンシーインデックス</h3>
-<br>
-<pre><code>arr = np.arange(10) * 10
-print(f"元の配列: {arr}")
+<span class="c1"># 正規分布</span>
+<span class="n">normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">正規分布:</span><span class="se">\n</span><span class="si">{</span><span class="n">normal</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# インデックスの配列で選択
-indices = [1, 3, 5, 7]
-print(f"選択された要素: {arr[indices]}")
+<span class="c1"># 整数の乱数</span>
+<span class="n">integers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">整数乱数:</span><span class="se">\n</span><span class="si">{</span><span class="n">integers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 2次元配列での例
-arr2d = np.arange(20).reshape(4, 5)
-print(f"\n元の2次元配列:\n{arr2d}")
+<span class="c1"># 配列のシャッフル</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">シャッフル後: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 行と列を指定
-rows = [0, 1, 2]
-cols = [1, 2, 3]
-print(f"選択された要素: {arr2d[rows, cols]}")</code></pre><br></p>
-<h2 id="6-配列の演算">6. 配列の演算</h2>
-<h3 id="基本的な算術演算">基本的な算術演算</h3>
-<br>
-<pre><code>a = np.array([1, 2, 3, 4])
-b = np.array([5, 6, 7, 8])
+<h2 id="5">5. 配列の操作とインデックス</h2>
+<h3 id="_7">基本的なインデックス</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1次元配列</span>
+<span class="n">arr1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;3番目の要素: </span><span class="si">{</span><span class="n">arr1d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最後の要素: </span><span class="si">{</span><span class="n">arr1d</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-print(f"a + b = {a + b}")
-print(f"a - b = {a - b}")
-print(f"a * b = {a * b}")
-print(f"a / b = {a / b}")
-print(f"a ** 2 = {a ** 2}")
-print(f"√a = {np.sqrt(a)}")</code></pre><br></p>
-<h3 id="ユニバーサル関数ufunc">ユニバーサル関数（ufunc）</h3>
-<br>
-<pre><code>angles = np.array([0, np.pi/4, np.pi/2, np.pi])
+<span class="c1"># 2次元配列</span>
+<span class="n">arr2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2行3列目: </span><span class="si">{</span><span class="n">arr2d</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2行目全体: </span><span class="si">{</span><span class="n">arr2d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;3列目全体: </span><span class="si">{</span><span class="n">arr2d</span><span class="p">[:,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 三角関数
-print(f"sin: {np.sin(angles)}")
-print(f"cos: {np.cos(angles)}")
+<h3 id="_8">スライシング</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1次元スライシング</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;インデックス2から5: </span><span class="si">{</span><span class="n">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;偶数インデックス: </span><span class="si">{</span><span class="n">arr</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;逆順: </span><span class="si">{</span><span class="n">arr</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 指数・対数
-arr = np.array([1, 2, 3])
-print(f"\ne^x: {np.exp(arr)}")
-print(f"ln(x): {np.log(arr)}")
-print(f"log10(x): {np.log10(arr)}")
+<span class="c1"># 2次元スライシング</span>
+<span class="n">arr2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">元の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr2d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">左上2x2:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr2d</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">右下2x2:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr2d</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:,</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 丸め
-arr_float = np.array([1.2, 2.7, 3.5, 4.8])
-print(f"\n元の配列: {arr_float}")
-print(f"floor: {np.floor(arr_float)}")
-print(f"ceil: {np.ceil(arr_float)}")
-print(f"round: {np.round(arr_float)}")</code></pre><br></p>
-<h3 id="配列同士の演算">配列同士の演算</h3>
-<br>
-<pre><code># 行列の積
-A = np.array([[1, 2], [3, 4]])
-B = np.array([[5, 6], [7, 8]])
+<h3 id="_9">ブールインデックス</h3>
+<div class="highlight"><pre><span></span><code><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
 
-print(f"要素ごとの積:\n{A * B}")
-print(f"\n行列積:\n{np.dot(A, B)}")
-print(f"\n行列積（@演算子）:\n{A @ B}")
+<span class="c1"># 条件に基づく選択</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;正の要素のマスク: </span><span class="si">{</span><span class="n">mask</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;正の要素: </span><span class="si">{</span><span class="n">arr</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 内積と外積
-a = np.array([1, 2, 3])
-b = np.array([4, 5, 6])
+<span class="c1"># 複数条件</span>
+<span class="n">arr2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">元の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr2d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-print(f"\n内積: {np.dot(a, b)}")
-print(f"外積:\n{np.outer(a, b)}")</code></pre><br></p>
-<h2 id="7-配列の形状変換">7. 配列の形状変換</h2>
+<span class="c1"># -5から5の間の要素</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">arr2d</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">arr2d</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-5&lt;x&lt;5の要素: </span><span class="si">{</span><span class="n">arr2d</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="_10">ファンシーインデックス</h3>
+<div class="highlight"><pre><span></span><code><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># インデックスの配列で選択</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;選択された要素: </span><span class="si">{</span><span class="n">arr</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2次元配列での例</span>
+<span class="n">arr2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">元の2次元配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr2d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 行と列を指定</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;選択された要素: </span><span class="si">{</span><span class="n">arr2d</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="n">cols</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="6">6. 配列の演算</h2>
+<h3 id="_11">基本的な算術演算</h3>
+<div class="highlight"><pre><span></span><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a + b = </span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a - b = </span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a * b = </span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a / b = </span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a ** 2 = </span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;√a = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="ufunc">ユニバーサル関数（ufunc）</h3>
+<div class="highlight"><pre><span></span><code><span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">])</span>
+
+<span class="c1"># 三角関数</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sin: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cos: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 指数・対数</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">e^x: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ln(x): </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;log10(x): </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 丸め</span>
+<span class="n">arr_float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.8</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">元の配列: </span><span class="si">{</span><span class="n">arr_float</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;floor: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">arr_float</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ceil: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">arr_float</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;round: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">arr_float</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="_12">配列同士の演算</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 行列の積</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;要素ごとの積:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">行列積:</span><span class="se">\n</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">行列積（@演算子）:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">B</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 内積と外積</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">内積: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;外積:</span><span class="se">\n</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="7">7. 配列の形状変換</h2>
 <h3 id="reshape">reshape</h3>
-<br>
-<pre><code># 1次元から2次元へ
-arr = np.arange(12)
-print(f"元の配列: {arr}")
+<div class="highlight"><pre><span></span><code><span class="c1"># 1次元から2次元へ</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-reshaped = arr.reshape(3, 4)
-print(f"\n3x4に変形:\n{reshaped}")
+<span class="n">reshaped</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3x4に変形:</span><span class="se">\n</span><span class="si">{</span><span class="n">reshaped</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# -1を使った自動計算
-auto_reshape = arr.reshape(2, -1)
-print(f"\n2x?に変形:\n{auto_reshape}")</code></pre><br></p>
-<h3 id="次元の追加削除">次元の追加・削除</h3>
-<br>
-<pre><code># 1次元配列
-arr = np.array([1, 2, 3, 4])
-print(f"元の形状: {arr.shape}")
+<span class="c1"># -1を使った自動計算</span>
+<span class="n">auto_reshape</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2x?に変形:</span><span class="se">\n</span><span class="si">{</span><span class="n">auto_reshape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# newaxisで次元追加
-col_vec = arr[:, np.newaxis]
-print(f"\n列ベクトル形状: {col_vec.shape}")
-print(f"列ベクトル:\n{col_vec}")
+<h3 id="_13">次元の追加・削除</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1次元配列</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の形状: </span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-row_vec = arr[np.newaxis, :]
-print(f"\n行ベクトル形状: {row_vec.shape}")
+<span class="c1"># newaxisで次元追加</span>
+<span class="n">col_vec</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">列ベクトル形状: </span><span class="si">{</span><span class="n">col_vec</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;列ベクトル:</span><span class="se">\n</span><span class="si">{</span><span class="n">col_vec</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# squeezeで次元削除
-arr3d = np.array([[[1, 2, 3]]])
-print(f"\n3次元配列形状: {arr3d.shape}")
-squeezed = np.squeeze(arr3d)
-print(f"squeeze後: {squeezed.shape}")</code></pre><br></p>
-<h3 id="転置と軸の入れ替え">転置と軸の入れ替え</h3>
-<br>
-<pre><code># 転置
-arr = np.array([[1, 2, 3], [4, 5, 6]])
-print(f"元の配列:\n{arr}")
-print(f"\n転置:\n{arr.T}")
+<span class="n">row_vec</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">行ベクトル形状: </span><span class="si">{</span><span class="n">row_vec</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 3次元配列の軸入れ替え
-arr3d = np.arange(24).reshape(2, 3, 4)
-print(f"\n3次元配列形状: {arr3d.shape}")
+<span class="c1"># squeezeで次元削除</span>
+<span class="n">arr3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3次元配列形状: </span><span class="si">{</span><span class="n">arr3d</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">squeezed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">arr3d</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;squeeze後: </span><span class="si">{</span><span class="n">squeezed</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-transposed = np.transpose(arr3d, (1, 0, 2))
-print(f"軸入れ替え後: {transposed.shape}")</code></pre><br></p>
-<h3 id="配列の結合と分割">配列の結合と分割</h3>
-<br>
-<pre><code># 結合
-a = np.array([[1, 2], [3, 4]])
-b = np.array([[5, 6], [7, 8]])
+<h3 id="_14">転置と軸の入れ替え</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 転置</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">転置:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">T</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 垂直結合
-v_stack = np.vstack((a, b))
-print(f"垂直結合:\n{v_stack}")
+<span class="c1"># 3次元配列の軸入れ替え</span>
+<span class="n">arr3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3次元配列形状: </span><span class="si">{</span><span class="n">arr3d</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 水平結合
-h_stack = np.hstack((a, b))
-print(f"\n水平結合:\n{h_stack}")
+<span class="n">transposed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">arr3d</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;軸入れ替え後: </span><span class="si">{</span><span class="n">transposed</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# concatenate
-concat_axis0 = np.concatenate((a, b), axis=0)
-concat_axis1 = np.concatenate((a, b), axis=1)
+<h3 id="_15">配列の結合と分割</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 結合</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
 
-# 分割
-arr = np.arange(16).reshape(4, 4)
-print(f"\n元の配列:\n{arr}")
+<span class="c1"># 垂直結合</span>
+<span class="n">v_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;垂直結合:</span><span class="se">\n</span><span class="si">{</span><span class="n">v_stack</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 垂直分割
-v_split = np.vsplit(arr, 2)
-print(f"\n垂直分割:")
-for i, part in enumerate(v_split):
-    print(f"Part {i+1}:\n{part}")
+<span class="c1"># 水平結合</span>
+<span class="n">h_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">水平結合:</span><span class="se">\n</span><span class="si">{</span><span class="n">h_stack</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 水平分割
-h_split = np.hsplit(arr, 2)
-print(f"\n水平分割:")
-for i, part in enumerate(h_split):
-    print(f"Part {i+1}:\n{part}")</code></pre><br></p>
-<h2 id="8-統計関数と集約">8. 統計関数と集約</h2>
-<h3 id="基本的な統計量">基本的な統計量</h3>
-<br>
-<pre><code># データの準備
-data = np.random.normal(100, 15, 1000)
+<span class="c1"># concatenate</span>
+<span class="n">concat_axis0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">concat_axis1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-print(f"平均: {np.mean(data):.2f}")
-print(f"中央値: {np.median(data):.2f}")
-print(f"標準偏差: {np.std(data):.2f}")
-print(f"分散: {np.var(data):.2f}")
-print(f"最小値: {np.min(data):.2f}")
-print(f"最大値: {np.max(data):.2f}")
+<span class="c1"># 分割</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">元の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# パーセンタイル
-print(f"\n25パーセンタイル: {np.percentile(data, 25):.2f}")
-print(f"75パーセンタイル: {np.percentile(data, 75):.2f}")</code></pre><br></p>
-<h3 id="軸に沿った集約">軸に沿った集約</h3>
-<br>
-<pre><code># 2次元配列での集約
-arr = np.random.randint(0, 10, size=(4, 5))
-print(f"元の配列:\n{arr}")
+<span class="c1"># 垂直分割</span>
+<span class="n">v_split</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vsplit</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">垂直分割:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">v_split</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Part </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-print(f"\n行ごとの合計: {np.sum(arr, axis=1)}")
-print(f"列ごとの合計: {np.sum(arr, axis=0)}")
-print(f"行ごとの平均: {np.mean(arr, axis=1)}")
-print(f"列ごとの平均: {np.mean(arr, axis=0)}")
+<span class="c1"># 水平分割</span>
+<span class="n">h_split</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hsplit</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">水平分割:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">h_split</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Part </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 累積和と累積積
-arr1d = np.array([1, 2, 3, 4, 5])
-print(f"\n累積和: {np.cumsum(arr1d)}")
-print(f"累積積: {np.cumprod(arr1d)}")</code></pre><br></p>
-<h3 id="条件付き集約">条件付き集約</h3>
-<br>
-<pre><code>arr = np.random.randint(-10, 10, size=20)
-print(f"配列: {arr}")
+<h2 id="8">8. 統計関数と集約</h2>
+<h3 id="_16">基本的な統計量</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># データの準備</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 
-# 条件を満たす要素の数
-positive_count = np.sum(arr &gt; 0)
-print(f"\n正の要素数: {positive_count}")
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;平均: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;中央値: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;標準偏差: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;分散: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最小値: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最大値: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 条件を満たす要素の位置
-positive_indices = np.where(arr &gt; 0)
-print(f"正の要素の位置: {positive_indices[0]}")
+<span class="c1"># パーセンタイル</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">25パーセンタイル: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;75パーセンタイル: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">75</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 条件を満たす要素の抽出
-positive_values = arr[arr &gt; 0]
-print(f"正の要素: {positive_values}")</code></pre><br></p>
-<h2 id="9-ブロードキャスティング">9. ブロードキャスティング</h2>
-<h3 id="ブロードキャスティングの基本">ブロードキャスティングの基本</h3>
-<br>
-ブロードキャスティングは、異なる形状の配列間で演算を行うためのNumPyの強力な機能です。<br>
-<br>
-<pre><code># スカラーとの演算
-arr = np.array([1, 2, 3, 4])
-print(f"配列 * 2: {arr * 2}")
+<h3 id="_17">軸に沿った集約</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 2次元配列での集約</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 異なる形状の配列
-a = np.array([[1, 2, 3], [4, 5, 6]])
-b = np.array([10, 20, 30])
-print(f"\n2D配列:\n{a}")
-print(f"1D配列: {b}")
-print(f"ブロードキャスト結果:\n{a + b}")</code></pre><br></p>
-<h3 id="ブロードキャスティングのルール">ブロードキャスティングのルール</h3>
-<br>
-<pre><code># ルール1: 次元数を合わせる
-a = np.ones((3, 4))
-b = np.ones(4)
-print(f"形状 {a.shape} + {b.shape} = {(a + b).shape}")
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">行ごとの合計: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;列ごとの合計: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;行ごとの平均: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;列ごとの平均: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# ルール2: 各次元のサイズが1または同じ
-a = np.ones((3, 1))
-b = np.ones((1, 4))
-print(f"\n形状 {a.shape} + {b.shape} = {(a + b).shape}")
-print(f"結果:\n{a + b}")
+<span class="c1"># 累積和と累積積</span>
+<span class="n">arr1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">累積和: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">arr1d</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;累積積: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">arr1d</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 実用例：正規化
-data = np.random.randint(0, 100, size=(5, 3))
-print(f"\n元のデータ:\n{data}")
+<h3 id="_18">条件付き集約</h3>
+<div class="highlight"><pre><span></span><code><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;配列: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 列ごとの平均と標準偏差
-mean = np.mean(data, axis=0)
-std = np.std(data, axis=0)
+<span class="c1"># 条件を満たす要素の数</span>
+<span class="n">positive_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">正の要素数: </span><span class="si">{</span><span class="n">positive_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 正規化
-normalized = (data - mean) / std
-print(f"\n正規化後:\n{normalized}")
-print(f"確認（平均）: {np.mean(normalized, axis=0)}")
-print(f"確認（標準偏差）: {np.std(normalized, axis=0)}")</code></pre><br></p>
-<h2 id="10-線形代数">10. 線形代数</h2>
-<h3 id="基本的な行列演算">基本的な行列演算</h3>
-<br>
-<pre><code># 行列の作成
-A = np.array([[1, 2], [3, 4]])
-B = np.array([[5, 6], [7, 8]])
+<span class="c1"># 条件を満たす要素の位置</span>
+<span class="n">positive_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;正の要素の位置: </span><span class="si">{</span><span class="n">positive_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-print(f"行列A:\n{A}")
-print(f"行列B:\n{B}")
+<span class="c1"># 条件を満たす要素の抽出</span>
+<span class="n">positive_values</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;正の要素: </span><span class="si">{</span><span class="n">positive_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 行列積
-print(f"\n行列積 A @ B:\n{A @ B}")
+<h2 id="9">9. ブロードキャスティング</h2>
+<h3 id="_19">ブロードキャスティングの基本</h3>
+<p>ブロードキャスティングは、異なる形状の配列間で演算を行うためのNumPyの強力な機能です。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># スカラーとの演算</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;配列 * 2: </span><span class="si">{</span><span class="n">arr</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 転置
-print(f"\nAの転置:\n{A.T}")
+<span class="c1"># 異なる形状の配列</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2D配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;1D配列: </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ブロードキャスト結果:</span><span class="se">\n</span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# トレース（対角和）
-print(f"\nAのトレース: {np.trace(A)}")
+<h3 id="_20">ブロードキャスティングのルール</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># ルール1: 次元数を合わせる</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;形状 </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 行列式
-print(f"Aの行列式: {np.linalg.det(A):.2f}")</code></pre><br></p>
-<h3 id="逆行列と連立方程式">逆行列と連立方程式</h3>
-<br>
-<pre><code># 逆行列
-A = np.array([[2, 1], [1, 3]])
-A_inv = np.linalg.inv(A)
-print(f"A:\n{A}")
-print(f"\nAの逆行列:\n{A_inv}")
-print(f"\n確認 A @ A_inv:\n{A @ A_inv}")
+<span class="c1"># ルール2: 各次元のサイズが1または同じ</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">形状 </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;結果:</span><span class="se">\n</span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 連立方程式を解く
-# 2x + y = 5
-# x + 3y = 7
-A = np.array([[2, 1], [1, 3]])
-b = np.array([5, 7])
-x = np.linalg.solve(A, b)
-print(f"\n連立方程式の解: x={x[0]:.2f}, y={x[1]:.2f}")
+<span class="c1"># 実用例：正規化</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">元のデータ:</span><span class="se">\n</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 検証
-print(f"検証: A @ x = {A @ x}")</code></pre><br></p>
-<h3 id="固有値と固有ベクトル">固有値と固有ベクトル</h3>
-<br>
-<pre><code># 対称行列
-A = np.array([[4, -2], [-2, 3]])
-eigenvalues, eigenvectors = np.linalg.eig(A)
+<span class="c1"># 列ごとの平均と標準偏差</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-print(f"行列A:\n{A}")
-print(f"\n固有値: {eigenvalues}")
-print(f"\n固有ベクトル:\n{eigenvectors}")
+<span class="c1"># 正規化</span>
+<span class="n">normalized</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">正規化後:</span><span class="se">\n</span><span class="si">{</span><span class="n">normalized</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;確認（平均）: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">normalized</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;確認（標準偏差）: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">normalized</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 検証
-for i in range(len(eigenvalues)):
-    v = eigenvectors[:, i]
-    λ = eigenvalues[i]
-    print(f"\n固有値{λ:.2f}の検証:")
-    print(f"A @ v = {A @ v}")
-    print(f"λ * v = {λ * v}")</code></pre><br></p>
-<h3 id="特異値分解svd">特異値分解（SVD）</h3>
-<br>
-<pre><code># 行列の作成
-A = np.array([[1, 2, 3], [4, 5, 6]])
-U, s, VT = np.linalg.svd(A)
+<h2 id="10">10. 線形代数</h2>
+<h3 id="_21">基本的な行列演算</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 行列の作成</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
 
-print(f"元の行列A:\n{A}")
-print(f"\nU:\n{U}")
-print(f"\n特異値: {s}")
-print(f"\nV^T:\n{VT}")
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;行列A:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;行列B:</span><span class="se">\n</span><span class="si">{</span><span class="n">B</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 再構成
-S = np.zeros(A.shape)
-S[:len(s), :len(s)] = np.diag(s)
-reconstructed = U @ S @ VT
-print(f"\n再構成:\n{reconstructed}")</code></pre><br></p>
-<h2 id="11-ファイル入出力">11. ファイル入出力</h2>
-<h3 id="numpy形式での保存読み込み">NumPy形式での保存・読み込み</h3>
-<br>
-<pre><code># 配列の作成
-arr = np.random.rand(5, 5)
-print(f"元の配列:\n{arr}")
+<span class="c1"># 行列積</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">行列積 A @ B:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">B</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# バイナリ形式で保存（.npy）
-np.save('array.npy', arr)
+<span class="c1"># 転置</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Aの転置:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 読み込み
-loaded_arr = np.load('array.npy')
-print(f"\n読み込んだ配列:\n{loaded_arr}")
+<span class="c1"># トレース（対角和）</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Aのトレース: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 複数の配列を保存（.npz）
-arr1 = np.array([1, 2, 3])
-arr2 = np.array([[4, 5], [6, 7]])
-np.savez('arrays.npz', x=arr1, y=arr2)
+<span class="c1"># 行列式</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aの行列式: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 読み込み
-data = np.load('arrays.npz')
-print(f"\nx: {data['x']}")
-print(f"y:\n{data['y']}")
+<h3 id="_22">逆行列と連立方程式</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 逆行列</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">A_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Aの逆行列:</span><span class="se">\n</span><span class="si">{</span><span class="n">A_inv</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">確認 A @ A_inv:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">A_inv</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 圧縮保存
-np.savez_compressed('arrays_compressed.npz', arr1=arr1, arr2=arr2)</code></pre><br></p>
-<h3 id="テキスト形式での保存読み込み">テキスト形式での保存・読み込み</h3>
-<br>
-<pre><code># CSVとして保存
-arr = np.random.rand(4, 3)
-np.savetxt('data.csv', arr, delimiter=',', fmt='%.3f')
+<span class="c1"># 連立方程式を解く</span>
+<span class="c1"># 2x + y = 5</span>
+<span class="c1"># x + 3y = 7</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">連立方程式の解: x=</span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, y=</span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# CSVから読み込み
-loaded = np.loadtxt('data.csv', delimiter=',')
-print(f"CSVから読み込み:\n{loaded}")
+<span class="c1"># 検証</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;検証: A @ x = </span><span class="si">{</span><span class="n">A</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# ヘッダー付きCSV
-header = "x,y,z"
-np.savetxt('data_with_header.csv', arr, delimiter=',', 
-           header=header, fmt='%.3f', comments='')
+<h3 id="_23">固有値と固有ベクトル</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 対称行列</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
-# より複雑なデータの読み込み
-# genfromtxtは欠損値や異なるデータ型に対応
-data = np.genfromtxt('data_with_header.csv', delimiter=',', 
-                     names=True, dtype=None, encoding='utf-8')</code></pre><br></p>
-<h2 id="12-実践的な応用例">12. 実践的な応用例</h2>
-<h3 id="例1-画像処理">例1: 画像処理</h3>
-<br>
-<pre><code># 画像をグレースケールとして扱う
-# 仮想的な画像データ（実際はPILやOpenCVで読み込む）
-image = np.random.randint(0, 256, size=(100, 100), dtype=np.uint8)
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;行列A:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">固有値: </span><span class="si">{</span><span class="n">eigenvalues</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">固有ベクトル:</span><span class="se">\n</span><span class="si">{</span><span class="n">eigenvectors</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 画像の統計情報
-print(f"画像サイズ: {image.shape}")
-print(f"最小輝度: {image.min()}")
-print(f"最大輝度: {image.max()}")
-print(f"平均輝度: {image.mean():.2f}")
+<span class="c1"># 検証</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">λ</span> <span class="o">=</span> <span class="n">eigenvalues</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">固有値</span><span class="si">{</span><span class="n">λ</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">の検証:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A @ v = </span><span class="si">{</span><span class="n">A</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;λ * v = </span><span class="si">{</span><span class="n">λ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 画像の変換
-# 反転
-inverted = 255 - image
+<h3 id="svd">特異値分解（SVD）</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 行列の作成</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">VT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
-# 二値化
-threshold = 128
-binary = (image &gt; threshold).astype(np.uint8) * 255
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の行列A:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">U:</span><span class="se">\n</span><span class="si">{</span><span class="n">U</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">特異値: </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">V^T:</span><span class="se">\n</span><span class="si">{</span><span class="n">VT</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# フィルタリング（簡単な平滑化）
-kernel = np.ones((3, 3)) / 9
-# 実際の畳み込みはscipy.ndimageやOpenCVを使用</code></pre><br></p>
-<h3 id="例2-時系列データ分析">例2: 時系列データ分析</h3>
-<br>
-<pre><code># 時系列データの生成
-np.random.seed(42)
-days = 365
-trend = np.linspace(100, 200, days)
-seasonal = 10 * np.sin(2 * np.pi * np.arange(days) / 365)
-noise = np.random.normal(0, 5, days)
-sales = trend + seasonal + noise
+<span class="c1"># 再構成</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">S</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">reconstructed</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">S</span> <span class="o">@</span> <span class="n">VT</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">再構成:</span><span class="se">\n</span><span class="si">{</span><span class="n">reconstructed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
 
-# 移動平均
-window = 7
-moving_avg = np.convolve(sales, np.ones(window)/window, mode='valid')
+<h2 id="11">11. ファイル入出力</h2>
+<h3 id="numpy_3">NumPy形式での保存・読み込み</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 配列の作成</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 統計量
-print(f"年間売上統計:")
-print(f"平均: {sales.mean():.2f}")
-print(f"標準偏差: {sales.std():.2f}")
-print(f"最大値: {sales.max():.2f}")
-print(f"最小値: {sales.min():.2f}")
+<span class="c1"># バイナリ形式で保存（.npy）</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;array.npy&#39;</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
 
-# 月ごとの集計（30日を1ヶ月と仮定）
-monthly_sales = sales[:360].reshape(12, 30).sum(axis=1)
-print(f"\n月別売上: {monthly_sales}")</code></pre><br></p>
-<h3 id="例3-機械学習の前処理">例3: 機械学習の前処理</h3>
-<br>
-<pre><code># データセットの準備
-np.random.seed(42)
-n_samples = 1000
-n_features = 5
+<span class="c1"># 読み込み</span>
+<span class="n">loaded_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;array.npy&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">読み込んだ配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">loaded_arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 特徴量の生成
-X = np.random.randn(n_samples, n_features)
-# ターゲット（線形関係 + ノイズ）
-true_weights = np.array([1.5, -2.0, 0.5, 1.0, -0.5])
-y = X @ true_weights + np.random.randn(n_samples) * 0.1
+<span class="c1"># 複数の配列を保存（.npz）</span>
+<span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savez</span><span class="p">(</span><span class="s1">&#39;arrays.npz&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">arr1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">arr2</span><span class="p">)</span>
 
-# データの標準化
-X_mean = X.mean(axis=0)
-X_std = X.std(axis=0)
-X_normalized = (X - X_mean) / X_std
+<span class="c1"># 読み込み</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;arrays.npz&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">x: </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;y:</span><span class="se">\n</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-print(f"元のデータ統計:")
-print(f"平均: {X.mean(axis=0)}")
-print(f"標準偏差: {X.std(axis=0)}")
+<span class="c1"># 圧縮保存</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savez_compressed</span><span class="p">(</span><span class="s1">&#39;arrays_compressed.npz&#39;</span><span class="p">,</span> <span class="n">arr1</span><span class="o">=</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="o">=</span><span class="n">arr2</span><span class="p">)</span>
+</code></pre></div>
 
-print(f"\n標準化後:")
-print(f"平均: {X_normalized.mean(axis=0)}")
-print(f"標準偏差: {X_normalized.std(axis=0)}")
+<h3 id="_24">テキスト形式での保存・読み込み</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># CSVとして保存</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.3f</span><span class="s1">&#39;</span><span class="p">)</span>
 
-# 訓練・テストデータの分割
-train_size = int(0.8 * n_samples)
-indices = np.random.permutation(n_samples)
-train_idx = indices[:train_size]
-test_idx = indices[train_size:]
+<span class="c1"># CSVから読み込み</span>
+<span class="n">loaded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CSVから読み込み:</span><span class="se">\n</span><span class="si">{</span><span class="n">loaded</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-X_train, X_test = X[train_idx], X[test_idx]
-y_train, y_test = y[train_idx], y[test_idx]
+<span class="c1"># ヘッダー付きCSV</span>
+<span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;x,y,z&quot;</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;data_with_header.csv&#39;</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> 
+           <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.3f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 
-print(f"\n訓練データサイズ: {X_train.shape}")
-print(f"テストデータサイズ: {X_test.shape}")</code></pre><br></p>
-<h3 id="例4-数値シミュレーション">例4: 数値シミュレーション</h3>
-<br>
-<pre><code># モンテカルロ法による円周率の推定
-n_points = 1000000
-points = np.random.uniform(-1, 1, size=(n_points, 2))
+<span class="c1"># より複雑なデータの読み込み</span>
+<span class="c1"># genfromtxtは欠損値や異なるデータ型に対応</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s1">&#39;data_with_header.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> 
+                     <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</code></pre></div>
 
-# 原点からの距離
-distances = np.sqrt(np.sum(points**2, axis=1))
+<h2 id="12">12. 実践的な応用例</h2>
+<h3 id="1">例1: 画像処理</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 画像をグレースケールとして扱う</span>
+<span class="c1"># 仮想的な画像データ（実際はPILやOpenCVで読み込む）</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
-# 単位円内の点の数
-inside_circle = np.sum(distances &lt;= 1)
+<span class="c1"># 画像の統計情報</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;画像サイズ: </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最小輝度: </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最大輝度: </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;平均輝度: </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# 円周率の推定
-pi_estimate = 4 * inside_circle / n_points
-print(f"推定された円周率: {pi_estimate}")
-print(f"実際の円周率: {np.pi}")
-print(f"誤差: {abs(pi_estimate - np.pi):.6f}")
+<span class="c1"># 画像の変換</span>
+<span class="c1"># 反転</span>
+<span class="n">inverted</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">image</span>
 
-# ランダムウォーク
-steps = 1000
-walk = np.random.choice([-1, 1], size=steps)
-position = np.cumsum(walk)
+<span class="c1"># 二値化</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">binary</span> <span class="o">=</span> <span class="p">(</span><span class="n">image</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
 
-print(f"\nランダムウォーク:")
-print(f"最終位置: {position[-1]}")
-print(f"最大到達点: {position.max()}")
-print(f"最小到達点: {position.min()}")</code></pre><br></p>
-<h2 id="まとめ">まとめ</h2>
-<br>
-NumPyは科学計算の基礎となるライブラリで、以下の重要な機能を提供します：<br></p>
-<ul>
+<span class="c1"># フィルタリング（簡単な平滑化）</span>
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="mi">9</span>
+<span class="c1"># 実際の畳み込みはscipy.ndimageやOpenCVを使用</span>
+</code></pre></div>
+
+<h3 id="2">例2: 時系列データ分析</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 時系列データの生成</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">days</span> <span class="o">=</span> <span class="mi">365</span>
+<span class="n">trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">days</span><span class="p">)</span>
+<span class="n">seasonal</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">days</span><span class="p">)</span> <span class="o">/</span> <span class="mi">365</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">days</span><span class="p">)</span>
+<span class="n">sales</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">+</span> <span class="n">seasonal</span> <span class="o">+</span> <span class="n">noise</span>
+
+<span class="c1"># 移動平均</span>
+<span class="n">window</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">moving_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">sales</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">window</span><span class="p">)</span><span class="o">/</span><span class="n">window</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+
+<span class="c1"># 統計量</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;年間売上統計:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;平均: </span><span class="si">{</span><span class="n">sales</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;標準偏差: </span><span class="si">{</span><span class="n">sales</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最大値: </span><span class="si">{</span><span class="n">sales</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最小値: </span><span class="si">{</span><span class="n">sales</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 月ごとの集計（30日を1ヶ月と仮定）</span>
+<span class="n">monthly_sales</span> <span class="o">=</span> <span class="n">sales</span><span class="p">[:</span><span class="mi">360</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">月別売上: </span><span class="si">{</span><span class="n">monthly_sales</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="3">例3: 機械学習の前処理</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># データセットの準備</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">n_features</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># 特徴量の生成</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>
+<span class="c1"># ターゲット（線形関係 + ノイズ）</span>
+<span class="n">true_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">true_weights</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+
+<span class="c1"># データの標準化</span>
+<span class="n">X_mean</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_std</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_normalized</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_std</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元のデータ統計:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;平均: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;標準偏差: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">標準化後:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;平均: </span><span class="si">{</span><span class="n">X_normalized</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;標準偏差: </span><span class="si">{</span><span class="n">X_normalized</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 訓練・テストデータの分割</span>
+<span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">n_samples</span><span class="p">)</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+<span class="n">train_idx</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[:</span><span class="n">train_size</span><span class="p">]</span>
+<span class="n">test_idx</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">train_size</span><span class="p">:]</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+<span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">訓練データサイズ: </span><span class="si">{</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;テストデータサイズ: </span><span class="si">{</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="4_1">例4: 数値シミュレーション</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># モンテカルロ法による円周率の推定</span>
+<span class="n">n_points</span> <span class="o">=</span> <span class="mi">1000000</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># 原点からの距離</span>
+<span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">points</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># 単位円内の点の数</span>
+<span class="n">inside_circle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">distances</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 円周率の推定</span>
+<span class="n">pi_estimate</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">inside_circle</span> <span class="o">/</span> <span class="n">n_points</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;推定された円周率: </span><span class="si">{</span><span class="n">pi_estimate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;実際の円周率: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;誤差: </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">pi_estimate</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ランダムウォーク</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">walk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">steps</span><span class="p">)</span>
+<span class="n">position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ランダムウォーク:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最終位置: </span><span class="si">{</span><span class="n">position</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最大到達点: </span><span class="si">{</span><span class="n">position</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最小到達点: </span><span class="si">{</span><span class="n">position</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="_25">まとめ</h2>
+<p>NumPyは科学計算の基礎となるライブラリで、以下の重要な機能を提供します：</p>
+<ol>
 <li><strong>高速な配列演算</strong>: C言語実装による高速処理</li>
 <li><strong>ブロードキャスティング</strong>: 異なる形状の配列間での効率的な演算</li>
 <li><strong>豊富な数学関数</strong>: 統計、線形代数、フーリエ変換など</li>
 <li><strong>メモリ効率</strong>: 連続したメモリ配置による効率的なデータ管理</li>
 <li><strong>他のライブラリとの連携</strong>: pandas、scikit-learn、TensorFlowなど</li>
-</ul>
-<h3 id="学習のポイント">学習のポイント</h3>
+</ol>
+<h3 id="_26">学習のポイント</h3>
 <ul>
 <li>まずは基本的な配列操作（作成、インデックス、スライス）を習得</li>
 <li>ブロードキャスティングの理解は必須</li>
 <li>実際のデータで練習を重ねる</li>
 <li>他のライブラリ（pandas、matplotlib）と組み合わせて使用</li>
 </ul>
-<h3 id="次のステップ">次のステップ</h3>
+<h3 id="_27">次のステップ</h3>
 <ul>
 <li><strong>pandas</strong>: データ分析のためのライブラリ</li>
 <li><strong>matplotlib/seaborn</strong>: データ可視化</li>
 <li><strong>scikit-learn</strong>: 機械学習</li>
 <li><strong>scipy</strong>: 科学計算の拡張機能</li>
 </ul>
-<br>
-NumPyをマスターすることで、Pythonでのデータサイエンスや科学計算の基礎が身につきます。実際のプロジェクトで使いながら、徐々に高度な機能も習得していきましょう。</p>
+<p>NumPyをマスターすることで、Pythonでのデータサイエンスや科学計算の基礎が身につきます。実際のプロジェクトで使いながら、徐々に高度な機能も習得していきましょう。</p>
+        
+        <div class="footer">
+            <p>NumPy完全チュートリアル - Pythonで科学計算をマスターしよう</p>
+            <p>&copy; 2024 Python Tutorial. All rights reserved.</p>
+        </div>
     </div>
-    <a href="#top" class="back-to-top">↑ トップへ</a>
+    
+    <a href="#" class="scroll-top" id="scrollTop">↑</a>
+    
     <script>
-        // シンタックスハイライト用の簡単な処理
-        document.addEventListener('DOMContentLoaded', function() {
-            // Python キーワードのハイライト
-            const keywords = ['import', 'from', 'def', 'class', 'return', 'if', 'else', 'elif', 
-                            'for', 'while', 'in', 'True', 'False', 'None', 'and', 'or', 'not',
-                            'try', 'except', 'finally', 'with', 'as', 'pass', 'break', 'continue',
-                            'print', 'np', 'numpy', 'array', 'shape', 'dtype'];
-            
-            const codeBlocks = document.querySelectorAll('pre code');
-            codeBlocks.forEach(block => {
-                let html = block.innerHTML;
-                
-                // 文字列をハイライト（シングルクォートとダブルクォート）
-                html = html.replace(/('[^']*'|"[^"]*")/g, '<span style="color: #e74c3c;">$1</span>');
-                
-                // 数値をハイライト
-                html = html.replace(/(\d+\.?\d*)/g, '<span style="color: #e67e22;">$1</span>');
-                
-                // コメントをハイライト
-                html = html.replace(/(#[^
-]*)/g, '<span style="color: #95a5a6;">$1</span>');
-                
-                // キーワードをハイライト
-                keywords.forEach(keyword => {
-                    const regex = new RegExp('\b(' + keyword + ')\b', 'g');
-                    html = html.replace(regex, '<span style="color: #3498db; font-weight: bold;">$1</span>');
-                });
-                
-                block.innerHTML = html;
+        // スクロールトップボタンの表示/非表示
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.pageYOffset > 200) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+        
+        // スムーズスクロール
+        document.getElementById('scrollTop').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
-            
-            // スクロールでトップへ戻るボタンの表示/非表示
-            const backToTop = document.querySelector('.back-to-top');
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    backToTop.style.display = 'block';
-                } else {
-                    backToTop.style.display = 'none';
+        });
+        
+        // 目次のスムーズスクロール
+        document.querySelectorAll('.toc a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
         });
