@@ -79,19 +79,24 @@
         
         /* コードブロック */
         pre {
-            background-color: #272822;
-            border-radius: 5px;
-            padding: 1rem;
-            overflow-x: auto;
             margin: 1rem 0;
         }
         
         .highlight {
+            background-color: #272822 !important;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        .highlight pre {
             background-color: transparent !important;
+            margin: 0;
+            padding: 1rem;
+            color: #F8F8F2;
         }
         
         /* インラインコード */
-        code:not(.highlight) {
+        code:not(.highlight > pre > code) {
             background-color: #f0f0f0;
             padding: 0.2rem 0.4rem;
             border-radius: 3px;
@@ -363,8 +368,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     </div>
     
     <div class="container">
-        <h1 id="numpy">NumPy完全チュートリアル</h1>
-<h2 id="_1">目次</h2>
+        <h1 id="numpy"><a class="toclink" href="#numpy">NumPy完全チュートリアル</a></h1>
+<h2 id="_1"><a class="toclink" href="#_1">目次</a></h2>
 <ol>
 <li><a href="#1-numpyとは">NumPyとは</a></li>
 <li><a href="#2-numpyのインストールと基本設定">NumPyのインストールと基本設定</a></li>
@@ -379,9 +384,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#11-ファイル入出力">ファイル入出力</a></li>
 <li><a href="#12-実践的な応用例">実践的な応用例</a></li>
 </ol>
-<h2 id="1-numpy">1. NumPyとは</h2>
+<h2 id="1-numpy"><a class="toclink" href="#1-numpy">1. NumPyとは</a></h2>
 <p>NumPyは「Numerical Python」の略で、Pythonで科学計算を行うための基礎的なライブラリです。高速な多次元配列操作と、それらの配列を操作するための高度な関数を提供します。</p>
-<h3 id="numpy_1">NumPyの特徴</h3>
+<h3 id="numpy_1"><a class="toclink" href="#numpy_1">NumPyの特徴</a></h3>
 <ul>
 <li><strong>高速な配列処理</strong>: C言語で実装されており、Pythonのリストよりも高速</li>
 <li><strong>多次元配列</strong>: 1次元から多次元まで柔軟に扱える</li>
@@ -389,7 +394,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>ブロードキャスティング</strong>: 異なる形状の配列同士の演算を効率的に実行</li>
 <li><strong>メモリ効率</strong>: 連続したメモリ領域に配列を格納</li>
 </ul>
-<h3 id="numpy_2">なぜNumPyを使うのか？</h3>
+<h3 id="numpy_2"><a class="toclink" href="#numpy_2">なぜNumPyを使うのか？</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># Pythonリストでの計算（遅い）</span>
 <span class="n">python_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">))</span>
 <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">python_list</span><span class="p">]</span>
@@ -400,12 +405,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="n">result</span> <span class="o">=</span> <span class="n">numpy_array</span> <span class="o">*</span> <span class="mi">2</span>
 </code></pre></div>
 
-<h2 id="2-numpy">2. NumPyのインストールと基本設定</h2>
-<h3 id="_2">インストール</h3>
+<h2 id="2-numpy"><a class="toclink" href="#2-numpy">2. NumPyのインストールと基本設定</a></h2>
+<h3 id="_2"><a class="toclink" href="#_2">インストール</a></h3>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>numpy
 </code></pre></div>
 
-<h3 id="_3">インポートと基本設定</h3>
+<h3 id="_3"><a class="toclink" href="#_3">インポートと基本設定</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># バージョン確認</span>
@@ -416,8 +421,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># 科学的記数法を抑制</span>
 </code></pre></div>
 
-<h2 id="3-numpyndarray">3. NumPy配列（ndarray）の基礎</h2>
-<h3 id="ndarray">ndarrayオブジェクト</h3>
+<h2 id="3-numpyndarray"><a class="toclink" href="#3-numpyndarray">3. NumPy配列（ndarray）の基礎</a></h2>
+<h3 id="ndarray"><a class="toclink" href="#ndarray">ndarrayオブジェクト</a></h3>
 <p>NumPyの中核となるのは<code>ndarray</code>（N-dimensional array）オブジェクトです。</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -441,7 +446,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;次元数: </span><span class="si">{</span><span class="n">arr3d</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="dtype">データ型（dtype）</h3>
+<h3 id="dtype"><a class="toclink" href="#dtype">データ型（dtype）</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 整数型</span>
 <span class="n">int_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;int32: </span><span class="si">{</span><span class="n">int_array</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -459,8 +464,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;bool: </span><span class="si">{</span><span class="n">bool_array</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="4">4. 配列の作成と初期化</h2>
-<h3 id="_4">基本的な配列作成</h3>
+<h2 id="4"><a class="toclink" href="#4">4. 配列の作成と初期化</a></h2>
+<h3 id="_4"><a class="toclink" href="#_4">基本的な配列作成</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># ゼロで初期化</span>
 <span class="n">zeros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ゼロ配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">zeros</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -482,7 +487,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">対角行列:</span><span class="se">\n</span><span class="si">{</span><span class="n">diag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_5">連続した値の配列</h3>
+<h3 id="_5"><a class="toclink" href="#_5">連続した値の配列</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># arange（範囲指定）</span>
 <span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;0から9: </span><span class="si">{</span><span class="n">arr1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -499,7 +504,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;10^0から10^2まで4要素: </span><span class="si">{</span><span class="n">arr4</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_6">ランダム配列</h3>
+<h3 id="_6"><a class="toclink" href="#_6">ランダム配列</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 乱数のシード設定（再現性のため）</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 
@@ -521,8 +526,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">シャッフル後: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="5">5. 配列の操作とインデックス</h2>
-<h3 id="_7">基本的なインデックス</h3>
+<h2 id="5"><a class="toclink" href="#5">5. 配列の操作とインデックス</a></h2>
+<h3 id="_7"><a class="toclink" href="#_7">基本的なインデックス</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 1次元配列</span>
 <span class="n">arr1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;3番目の要素: </span><span class="si">{</span><span class="n">arr1d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -535,7 +540,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;3列目全体: </span><span class="si">{</span><span class="n">arr2d</span><span class="p">[:,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_8">スライシング</h3>
+<h3 id="_8"><a class="toclink" href="#_8">スライシング</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 1次元スライシング</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;インデックス2から5: </span><span class="si">{</span><span class="n">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -549,7 +554,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">右下2x2:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr2d</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:,</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_9">ブールインデックス</h3>
+<h3 id="_9"><a class="toclink" href="#_9">ブールインデックス</a></h3>
 <div class="highlight"><pre><span></span><code><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
 
 <span class="c1"># 条件に基づく選択</span>
@@ -566,7 +571,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-5&lt;x&lt;5の要素: </span><span class="si">{</span><span class="n">arr2d</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_10">ファンシーインデックス</h3>
+<h3 id="_10"><a class="toclink" href="#_10">ファンシーインデックス</a></h3>
 <div class="highlight"><pre><span></span><code><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -584,8 +589,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;選択された要素: </span><span class="si">{</span><span class="n">arr2d</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="n">cols</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="6">6. 配列の演算</h2>
-<h3 id="_11">基本的な算術演算</h3>
+<h2 id="6"><a class="toclink" href="#6">6. 配列の演算</a></h2>
+<h3 id="_11"><a class="toclink" href="#_11">基本的な算術演算</a></h3>
 <div class="highlight"><pre><span></span><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
 
@@ -597,7 +602,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;√a = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="ufunc">ユニバーサル関数（ufunc）</h3>
+<h3 id="ufunc"><a class="toclink" href="#ufunc">ユニバーサル関数（ufunc）</a></h3>
 <div class="highlight"><pre><span></span><code><span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">])</span>
 
 <span class="c1"># 三角関数</span>
@@ -618,7 +623,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;round: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">arr_float</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_12">配列同士の演算</h3>
+<h3 id="_12"><a class="toclink" href="#_12">配列同士の演算</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 行列の積</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
@@ -635,8 +640,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;外積:</span><span class="se">\n</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="7">7. 配列の形状変換</h2>
-<h3 id="reshape">reshape</h3>
+<h2 id="7"><a class="toclink" href="#7">7. 配列の形状変換</a></h2>
+<h3 id="reshape"><a class="toclink" href="#reshape">reshape</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 1次元から2次元へ</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -649,7 +654,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2x?に変形:</span><span class="se">\n</span><span class="si">{</span><span class="n">auto_reshape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_13">次元の追加・削除</h3>
+<h3 id="_13"><a class="toclink" href="#_13">次元の追加・削除</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 1次元配列</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の形状: </span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -669,7 +674,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;squeeze後: </span><span class="si">{</span><span class="n">squeezed</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_14">転置と軸の入れ替え</h3>
+<h3 id="_14"><a class="toclink" href="#_14">転置と軸の入れ替え</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 転置</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -683,7 +688,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;軸入れ替え後: </span><span class="si">{</span><span class="n">transposed</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_15">配列の結合と分割</h3>
+<h3 id="_15"><a class="toclink" href="#_15">配列の結合と分割</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 結合</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
@@ -717,8 +722,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Part </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="8">8. 統計関数と集約</h2>
-<h3 id="_16">基本的な統計量</h3>
+<h2 id="8"><a class="toclink" href="#8">8. 統計関数と集約</a></h2>
+<h3 id="_16"><a class="toclink" href="#_16">基本的な統計量</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># データの準備</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 
@@ -734,7 +739,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;75パーセンタイル: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">75</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_17">軸に沿った集約</h3>
+<h3 id="_17"><a class="toclink" href="#_17">軸に沿った集約</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 2次元配列での集約</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -750,7 +755,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;累積積: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">arr1d</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_18">条件付き集約</h3>
+<h3 id="_18"><a class="toclink" href="#_18">条件付き集約</a></h3>
 <div class="highlight"><pre><span></span><code><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;配列: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -767,8 +772,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;正の要素: </span><span class="si">{</span><span class="n">positive_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="9">9. ブロードキャスティング</h2>
-<h3 id="_19">ブロードキャスティングの基本</h3>
+<h2 id="9"><a class="toclink" href="#9">9. ブロードキャスティング</a></h2>
+<h3 id="_19"><a class="toclink" href="#_19">ブロードキャスティングの基本</a></h3>
 <p>ブロードキャスティングは、異なる形状の配列間で演算を行うためのNumPyの強力な機能です。</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># スカラーとの演算</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
@@ -782,7 +787,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ブロードキャスト結果:</span><span class="se">\n</span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_20">ブロードキャスティングのルール</h3>
+<h3 id="_20"><a class="toclink" href="#_20">ブロードキャスティングのルール</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># ルール1: 次元数を合わせる</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
@@ -809,8 +814,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;確認（標準偏差）: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">normalized</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="10">10. 線形代数</h2>
-<h3 id="_21">基本的な行列演算</h3>
+<h2 id="10"><a class="toclink" href="#10">10. 線形代数</a></h2>
+<h3 id="_21"><a class="toclink" href="#_21">基本的な行列演算</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 行列の作成</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
@@ -831,7 +836,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aの行列式: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_22">逆行列と連立方程式</h3>
+<h3 id="_22"><a class="toclink" href="#_22">逆行列と連立方程式</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 逆行列</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
 <span class="n">A_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -851,7 +856,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;検証: A @ x = </span><span class="si">{</span><span class="n">A</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_23">固有値と固有ベクトル</h3>
+<h3 id="_23"><a class="toclink" href="#_23">固有値と固有ベクトル</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 対称行列</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
 <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -869,7 +874,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;λ * v = </span><span class="si">{</span><span class="n">λ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="svd">特異値分解（SVD）</h3>
+<h3 id="svd"><a class="toclink" href="#svd">特異値分解（SVD）</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 行列の作成</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
 <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">VT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -886,8 +891,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">再構成:</span><span class="se">\n</span><span class="si">{</span><span class="n">reconstructed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="11">11. ファイル入出力</h2>
-<h3 id="numpy_3">NumPy形式での保存・読み込み</h3>
+<h2 id="11"><a class="toclink" href="#11">11. ファイル入出力</a></h2>
+<h3 id="numpy_3"><a class="toclink" href="#numpy_3">NumPy形式での保存・読み込み</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 配列の作成</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;元の配列:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -913,7 +918,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="n">np</span><span class="o">.</span><span class="n">savez_compressed</span><span class="p">(</span><span class="s1">&#39;arrays_compressed.npz&#39;</span><span class="p">,</span> <span class="n">arr1</span><span class="o">=</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="o">=</span><span class="n">arr2</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="_24">テキスト形式での保存・読み込み</h3>
+<h3 id="_24"><a class="toclink" href="#_24">テキスト形式での保存・読み込み</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># CSVとして保存</span>
 <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.3f</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -933,8 +938,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
                      <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="12">12. 実践的な応用例</h2>
-<h3 id="1">例1: 画像処理</h3>
+<h2 id="12"><a class="toclink" href="#12">12. 実践的な応用例</a></h2>
+<h3 id="1"><a class="toclink" href="#1">例1: 画像処理</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 画像をグレースケールとして扱う</span>
 <span class="c1"># 仮想的な画像データ（実際はPILやOpenCVで読み込む）</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
@@ -958,7 +963,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="c1"># 実際の畳み込みはscipy.ndimageやOpenCVを使用</span>
 </code></pre></div>
 
-<h3 id="2">例2: 時系列データ分析</h3>
+<h3 id="2"><a class="toclink" href="#2">例2: 時系列データ分析</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># 時系列データの生成</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">days</span> <span class="o">=</span> <span class="mi">365</span>
@@ -983,7 +988,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">月別売上: </span><span class="si">{</span><span class="n">monthly_sales</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="3">例3: 機械学習の前処理</h3>
+<h3 id="3"><a class="toclink" href="#3">例3: 機械学習の前処理</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># データセットの準備</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -1021,7 +1026,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;テストデータサイズ: </span><span class="si">{</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="4_1">例4: 数値シミュレーション</h3>
+<h3 id="4_1"><a class="toclink" href="#4_1">例4: 数値シミュレーション</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># モンテカルロ法による円周率の推定</span>
 <span class="n">n_points</span> <span class="o">=</span> <span class="mi">1000000</span>
 <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -1049,7 +1054,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最小到達点: </span><span class="si">{</span><span class="n">position</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="_25">まとめ</h2>
+<h2 id="_25"><a class="toclink" href="#_25">まとめ</a></h2>
 <p>NumPyは科学計算の基礎となるライブラリで、以下の重要な機能を提供します：</p>
 <ol>
 <li><strong>高速な配列演算</strong>: C言語実装による高速処理</li>
@@ -1058,14 +1063,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>メモリ効率</strong>: 連続したメモリ配置による効率的なデータ管理</li>
 <li><strong>他のライブラリとの連携</strong>: pandas、scikit-learn、TensorFlowなど</li>
 </ol>
-<h3 id="_26">学習のポイント</h3>
+<h3 id="_26"><a class="toclink" href="#_26">学習のポイント</a></h3>
 <ul>
 <li>まずは基本的な配列操作（作成、インデックス、スライス）を習得</li>
 <li>ブロードキャスティングの理解は必須</li>
 <li>実際のデータで練習を重ねる</li>
 <li>他のライブラリ（pandas、matplotlib）と組み合わせて使用</li>
 </ul>
-<h3 id="_27">次のステップ</h3>
+<h3 id="_27"><a class="toclink" href="#_27">次のステップ</a></h3>
 <ul>
 <li><strong>pandas</strong>: データ分析のためのライブラリ</li>
 <li><strong>matplotlib/seaborn</strong>: データ可視化</li>

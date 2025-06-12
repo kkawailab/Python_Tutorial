@@ -12,24 +12,21 @@ def convert_markdown_to_html(md_content):
     
     # Markdown拡張機能の設定
     extensions = [
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.tables',
-        'markdown.extensions.toc',
-        'markdown.extensions.nl2br',
-        'markdown.extensions.attr_list'
+        'codehilite',
+        'fenced_code',
+        'tables',
+        'toc',
+        'nl2br'
     ]
     
     extension_configs = {
-        'markdown.extensions.codehilite': {
-            'use_pygments': True,
+        'codehilite': {
             'css_class': 'highlight',
             'linenums': False,
-            'guess_lang': True
         },
-        'markdown.extensions.toc': {
+        'toc': {
             'title': '目次',
-            'toc_depth': 3
+            'anchorlink': True,
         }
     }
     
@@ -126,19 +123,24 @@ def convert_markdown_to_html(md_content):
         
         /* コードブロック */
         pre {{
-            background-color: #272822;
-            border-radius: 5px;
-            padding: 1rem;
-            overflow-x: auto;
             margin: 1rem 0;
         }}
         
         .highlight {{
+            background-color: #272822 !important;
+            border-radius: 5px;
+            overflow-x: auto;
+        }}
+        
+        .highlight pre {{
             background-color: transparent !important;
+            margin: 0;
+            padding: 1rem;
+            color: #F8F8F2;
         }}
         
         /* インラインコード */
-        code:not(.highlight) {{
+        code:not(.highlight > pre > code) {{
             background-color: #f0f0f0;
             padding: 0.2rem 0.4rem;
             border-radius: 3px;
