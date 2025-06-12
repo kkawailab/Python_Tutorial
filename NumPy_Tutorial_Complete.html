@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NumPy完全チュートリアル</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 40px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #ecf0f1;
+        }
+        .toc {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .toc h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .note {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 10px 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .warning {
+            background-color: #fcf8e3;
+            border-left: 4px solid #f39c12;
+            padding: 10px 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: none;
+        }
+        .back-to-top:hover {
+            background-color: #2980b9;
+        }
+        ul li {
+            margin: 5px 0;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px;
+            }
+            pre {
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="numpy完全チュートリアル">NumPy完全チュートリアル</h1>
+<h2 id="目次">目次</h2>
+<ul>
+<li><a href="#1-numpyとは">NumPyとは</a></li>
+<li><a href="#2-numpyのインストールと基本設定">NumPyのインストールと基本設定</a></li>
+<li><a href="#3-numpy配列ndarrayの基礎">NumPy配列（ndarray）の基礎</a></li>
+<li><a href="#4-配列の作成と初期化">配列の作成と初期化</a></li>
+<li><a href="#5-配列の操作とインデックス">配列の操作とインデックス</a></li>
+<li><a href="#6-配列の演算">配列の演算</a></li>
+<li><a href="#7-配列の形状変換">配列の形状変換</a></li>
+<li><a href="#8-統計関数と集約">統計関数と集約</a></li>
+<li><a href="#9-ブロードキャスティング">ブロードキャスティング</a></li>
+<li><a href="#10-線形代数">線形代数</a></li>
+<li><a href="#11-ファイル入出力">ファイル入出力</a></li>
+<li><a href="#12-実践的な応用例">実践的な応用例</a></li>
+</ul>
+<h2 id="1-numpyとは">1. NumPyとは</h2>
+<br>
+NumPyは「Numerical Python」の略で、Pythonで科学計算を行うための基礎的なライブラリです。高速な多次元配列操作と、それらの配列を操作するための高度な関数を提供します。<br></p>
+<h3 id="numpyの特徴">NumPyの特徴</h3>
+<ul>
+<li><strong>高速な配列処理</strong>: C言語で実装されており、Pythonのリストよりも高速</li>
+<li><strong>多次元配列</strong>: 1次元から多次元まで柔軟に扱える</li>
+<li><strong>数学関数</strong>: 三角関数、統計関数など豊富な数学関数</li>
+<li><strong>ブロードキャスティング</strong>: 異なる形状の配列同士の演算を効率的に実行</li>
+<li><strong>メモリ効率</strong>: 連続したメモリ領域に配列を格納</li>
+</ul>
+<h3 id="なぜnumpyを使うのか">なぜNumPyを使うのか？</h3>
+<br>
+<pre><code># Pythonリストでの計算（遅い）
+python_list = list(range(1000000))
+result = [x * 2 for x in python_list]
+
+# NumPyでの計算（高速）
+import numpy as np
+numpy_array = np.arange(1000000)
+result = numpy_array * 2</code></pre><br></p>
+<h2 id="2-numpyのインストールと基本設定">2. NumPyのインストールと基本設定</h2>
+<h3 id="インストール">インストール</h3>
+<br>
+<pre><code>pip install numpy</code></pre><br></p>
+<h3 id="インポートと基本設定">インポートと基本設定</h3>
+<br>
+<pre><code>import numpy as np
+
+# バージョン確認
+print(np.__version__)
+
+# 表示設定
+np.set_printoptions(precision=3)  # 小数点以下3桁表示
+np.set_printoptions(suppress=True)  # 科学的記数法を抑制</code></pre><br></p>
+<h2 id="3-numpy配列ndarrayの基礎">3. NumPy配列（ndarray）の基礎</h2>
+<h3 id="ndarrayオブジェクト">ndarrayオブジェクト</h3>
+<br>
+NumPyの中核となるのは<code>ndarray</code>（N-dimensional array）オブジェクトです。<br>
+<br>
+<pre><code>import numpy as np
+
+# 1次元配列
+arr1d = np.array([1, 2, 3, 4, 5])
+print(f"1次元配列: {arr1d}")
+print(f"形状: {arr1d.shape}")
+print(f"次元数: {arr1d.ndim}")
+print(f"データ型: {arr1d.dtype}")
+
+# 2次元配列
+arr2d = np.array([[1, 2, 3], [4, 5, 6]])
+print(f"\n2次元配列:\n{arr2d}")
+print(f"形状: {arr2d.shape}")
+print(f"次元数: {arr2d.ndim}")
+
+# 3次元配列
+arr3d = np.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
+print(f"\n3次元配列:\n{arr3d}")
+print(f"形状: {arr3d.shape}")
+print(f"次元数: {arr3d.ndim}")</code></pre><br></p>
+<h3 id="データ型dtype">データ型（dtype）</h3>
+<br>
+<pre><code># 整数型
+int_array = np.array([1, 2, 3], dtype=np.int32)
+print(f"int32: {int_array.dtype}")
+
+# 浮動小数点型
+float_array = np.array([1.0, 2.0, 3.0], dtype=np.float64)
+print(f"float64: {float_array.dtype}")
+
+# 複素数型
+complex_array = np.array([1+2j, 3+4j], dtype=np.complex128)
+print(f"complex128: {complex_array.dtype}")
+
+# ブール型
+bool_array = np.array([True, False, True], dtype=np.bool_)
+print(f"bool: {bool_array.dtype}")</code></pre><br></p>
+<h2 id="4-配列の作成と初期化">4. 配列の作成と初期化</h2>
+<h3 id="基本的な配列作成">基本的な配列作成</h3>
+<br>
+<pre><code># ゼロで初期化
+zeros = np.zeros((3, 4))
+print(f"ゼロ配列:\n{zeros}")
+
+# 1で初期化
+ones = np.ones((2, 3))
+print(f"\n1の配列:\n{ones}")
+
+# 特定の値で初期化
+full = np.full((2, 2), 7)
+print(f"\n7で満たされた配列:\n{full}")
+
+# 単位行列
+eye = np.eye(3)
+print(f"\n単位行列:\n{eye}")
+
+# 対角行列
+diag = np.diag([1, 2, 3, 4])
+print(f"\n対角行列:\n{diag}")</code></pre><br></p>
+<h3 id="連続した値の配列">連続した値の配列</h3>
+<br>
+<pre><code># arange（範囲指定）
+arr1 = np.arange(10)
+print(f"0から9: {arr1}")
+
+arr2 = np.arange(2, 10, 2)
+print(f"2から9まで2刻み: {arr2}")
+
+# linspace（要素数指定）
+arr3 = np.linspace(0, 1, 5)
+print(f"0から1まで5要素: {arr3}")
+
+# logspace（対数スケール）
+arr4 = np.logspace(0, 2, 4)
+print(f"10^0から10^2まで4要素: {arr4}")</code></pre><br></p>
+<h3 id="ランダム配列">ランダム配列</h3>
+<br>
+<pre><code># 乱数のシード設定（再現性のため）
+np.random.seed(42)
+
+# 一様分布（0から1）
+uniform = np.random.rand(3, 3)
+print(f"一様分布:\n{uniform}")
+
+# 正規分布
+normal = np.random.randn(3, 3)
+print(f"\n正規分布:\n{normal}")
+
+# 整数の乱数
+integers = np.random.randint(0, 10, size=(3, 3))
+print(f"\n整数乱数:\n{integers}")
+
+# 配列のシャッフル
+arr = np.arange(10)
+np.random.shuffle(arr)
+print(f"\nシャッフル後: {arr}")</code></pre><br></p>
+<h2 id="5-配列の操作とインデックス">5. 配列の操作とインデックス</h2>
+<h3 id="基本的なインデックス">基本的なインデックス</h3>
+<br>
+<pre><code># 1次元配列
+arr1d = np.array([10, 20, 30, 40, 50])
+print(f"3番目の要素: {arr1d[2]}")
+print(f"最後の要素: {arr1d[-1]}")
+
+# 2次元配列
+arr2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+print(f"\n2行3列目: {arr2d[1, 2]}")
+print(f"2行目全体: {arr2d[1]}")
+print(f"3列目全体: {arr2d[:, 2]}")</code></pre><br></p>
+<h3 id="スライシング">スライシング</h3>
+<br>
+<pre><code># 1次元スライシング
+arr = np.arange(10)
+print(f"インデックス2から5: {arr[2:6]}")
+print(f"偶数インデックス: {arr[::2]}")
+print(f"逆順: {arr[::-1]}")
+
+# 2次元スライシング
+arr2d = np.arange(20).reshape(4, 5)
+print(f"\n元の配列:\n{arr2d}")
+print(f"\n左上2x2:\n{arr2d[:2, :2]}")
+print(f"\n右下2x2:\n{arr2d[-2:, -2:]}")</code></pre><br></p>
+<h3 id="ブールインデックス">ブールインデックス</h3>
+<br>
+<pre><code>arr = np.array([1, -2, 3, -4, 5])
+
+# 条件に基づく選択
+mask = arr &gt; 0
+print(f"正の要素のマスク: {mask}")
+print(f"正の要素: {arr[mask]}")
+
+# 複数条件
+arr2d = np.random.randint(-10, 10, size=(5, 5))
+print(f"\n元の配列:\n{arr2d}")
+
+# -5から5の間の要素
+mask = (arr2d &gt; -5) &amp; (arr2d &lt; 5)
+print(f"\n-5&lt;x&lt;5の要素: {arr2d[mask]}")</code></pre><br></p>
+<h3 id="ファンシーインデックス">ファンシーインデックス</h3>
+<br>
+<pre><code>arr = np.arange(10) * 10
+print(f"元の配列: {arr}")
+
+# インデックスの配列で選択
+indices = [1, 3, 5, 7]
+print(f"選択された要素: {arr[indices]}")
+
+# 2次元配列での例
+arr2d = np.arange(20).reshape(4, 5)
+print(f"\n元の2次元配列:\n{arr2d}")
+
+# 行と列を指定
+rows = [0, 1, 2]
+cols = [1, 2, 3]
+print(f"選択された要素: {arr2d[rows, cols]}")</code></pre><br></p>
+<h2 id="6-配列の演算">6. 配列の演算</h2>
+<h3 id="基本的な算術演算">基本的な算術演算</h3>
+<br>
+<pre><code>a = np.array([1, 2, 3, 4])
+b = np.array([5, 6, 7, 8])
+
+print(f"a + b = {a + b}")
+print(f"a - b = {a - b}")
+print(f"a * b = {a * b}")
+print(f"a / b = {a / b}")
+print(f"a ** 2 = {a ** 2}")
+print(f"√a = {np.sqrt(a)}")</code></pre><br></p>
+<h3 id="ユニバーサル関数ufunc">ユニバーサル関数（ufunc）</h3>
+<br>
+<pre><code>angles = np.array([0, np.pi/4, np.pi/2, np.pi])
+
+# 三角関数
+print(f"sin: {np.sin(angles)}")
+print(f"cos: {np.cos(angles)}")
+
+# 指数・対数
+arr = np.array([1, 2, 3])
+print(f"\ne^x: {np.exp(arr)}")
+print(f"ln(x): {np.log(arr)}")
+print(f"log10(x): {np.log10(arr)}")
+
+# 丸め
+arr_float = np.array([1.2, 2.7, 3.5, 4.8])
+print(f"\n元の配列: {arr_float}")
+print(f"floor: {np.floor(arr_float)}")
+print(f"ceil: {np.ceil(arr_float)}")
+print(f"round: {np.round(arr_float)}")</code></pre><br></p>
+<h3 id="配列同士の演算">配列同士の演算</h3>
+<br>
+<pre><code># 行列の積
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+
+print(f"要素ごとの積:\n{A * B}")
+print(f"\n行列積:\n{np.dot(A, B)}")
+print(f"\n行列積（@演算子）:\n{A @ B}")
+
+# 内積と外積
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+print(f"\n内積: {np.dot(a, b)}")
+print(f"外積:\n{np.outer(a, b)}")</code></pre><br></p>
+<h2 id="7-配列の形状変換">7. 配列の形状変換</h2>
+<h3 id="reshape">reshape</h3>
+<br>
+<pre><code># 1次元から2次元へ
+arr = np.arange(12)
+print(f"元の配列: {arr}")
+
+reshaped = arr.reshape(3, 4)
+print(f"\n3x4に変形:\n{reshaped}")
+
+# -1を使った自動計算
+auto_reshape = arr.reshape(2, -1)
+print(f"\n2x?に変形:\n{auto_reshape}")</code></pre><br></p>
+<h3 id="次元の追加削除">次元の追加・削除</h3>
+<br>
+<pre><code># 1次元配列
+arr = np.array([1, 2, 3, 4])
+print(f"元の形状: {arr.shape}")
+
+# newaxisで次元追加
+col_vec = arr[:, np.newaxis]
+print(f"\n列ベクトル形状: {col_vec.shape}")
+print(f"列ベクトル:\n{col_vec}")
+
+row_vec = arr[np.newaxis, :]
+print(f"\n行ベクトル形状: {row_vec.shape}")
+
+# squeezeで次元削除
+arr3d = np.array([[[1, 2, 3]]])
+print(f"\n3次元配列形状: {arr3d.shape}")
+squeezed = np.squeeze(arr3d)
+print(f"squeeze後: {squeezed.shape}")</code></pre><br></p>
+<h3 id="転置と軸の入れ替え">転置と軸の入れ替え</h3>
+<br>
+<pre><code># 転置
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+print(f"元の配列:\n{arr}")
+print(f"\n転置:\n{arr.T}")
+
+# 3次元配列の軸入れ替え
+arr3d = np.arange(24).reshape(2, 3, 4)
+print(f"\n3次元配列形状: {arr3d.shape}")
+
+transposed = np.transpose(arr3d, (1, 0, 2))
+print(f"軸入れ替え後: {transposed.shape}")</code></pre><br></p>
+<h3 id="配列の結合と分割">配列の結合と分割</h3>
+<br>
+<pre><code># 結合
+a = np.array([[1, 2], [3, 4]])
+b = np.array([[5, 6], [7, 8]])
+
+# 垂直結合
+v_stack = np.vstack((a, b))
+print(f"垂直結合:\n{v_stack}")
+
+# 水平結合
+h_stack = np.hstack((a, b))
+print(f"\n水平結合:\n{h_stack}")
+
+# concatenate
+concat_axis0 = np.concatenate((a, b), axis=0)
+concat_axis1 = np.concatenate((a, b), axis=1)
+
+# 分割
+arr = np.arange(16).reshape(4, 4)
+print(f"\n元の配列:\n{arr}")
+
+# 垂直分割
+v_split = np.vsplit(arr, 2)
+print(f"\n垂直分割:")
+for i, part in enumerate(v_split):
+    print(f"Part {i+1}:\n{part}")
+
+# 水平分割
+h_split = np.hsplit(arr, 2)
+print(f"\n水平分割:")
+for i, part in enumerate(h_split):
+    print(f"Part {i+1}:\n{part}")</code></pre><br></p>
+<h2 id="8-統計関数と集約">8. 統計関数と集約</h2>
+<h3 id="基本的な統計量">基本的な統計量</h3>
+<br>
+<pre><code># データの準備
+data = np.random.normal(100, 15, 1000)
+
+print(f"平均: {np.mean(data):.2f}")
+print(f"中央値: {np.median(data):.2f}")
+print(f"標準偏差: {np.std(data):.2f}")
+print(f"分散: {np.var(data):.2f}")
+print(f"最小値: {np.min(data):.2f}")
+print(f"最大値: {np.max(data):.2f}")
+
+# パーセンタイル
+print(f"\n25パーセンタイル: {np.percentile(data, 25):.2f}")
+print(f"75パーセンタイル: {np.percentile(data, 75):.2f}")</code></pre><br></p>
+<h3 id="軸に沿った集約">軸に沿った集約</h3>
+<br>
+<pre><code># 2次元配列での集約
+arr = np.random.randint(0, 10, size=(4, 5))
+print(f"元の配列:\n{arr}")
+
+print(f"\n行ごとの合計: {np.sum(arr, axis=1)}")
+print(f"列ごとの合計: {np.sum(arr, axis=0)}")
+print(f"行ごとの平均: {np.mean(arr, axis=1)}")
+print(f"列ごとの平均: {np.mean(arr, axis=0)}")
+
+# 累積和と累積積
+arr1d = np.array([1, 2, 3, 4, 5])
+print(f"\n累積和: {np.cumsum(arr1d)}")
+print(f"累積積: {np.cumprod(arr1d)}")</code></pre><br></p>
+<h3 id="条件付き集約">条件付き集約</h3>
+<br>
+<pre><code>arr = np.random.randint(-10, 10, size=20)
+print(f"配列: {arr}")
+
+# 条件を満たす要素の数
+positive_count = np.sum(arr &gt; 0)
+print(f"\n正の要素数: {positive_count}")
+
+# 条件を満たす要素の位置
+positive_indices = np.where(arr &gt; 0)
+print(f"正の要素の位置: {positive_indices[0]}")
+
+# 条件を満たす要素の抽出
+positive_values = arr[arr &gt; 0]
+print(f"正の要素: {positive_values}")</code></pre><br></p>
+<h2 id="9-ブロードキャスティング">9. ブロードキャスティング</h2>
+<h3 id="ブロードキャスティングの基本">ブロードキャスティングの基本</h3>
+<br>
+ブロードキャスティングは、異なる形状の配列間で演算を行うためのNumPyの強力な機能です。<br>
+<br>
+<pre><code># スカラーとの演算
+arr = np.array([1, 2, 3, 4])
+print(f"配列 * 2: {arr * 2}")
+
+# 異なる形状の配列
+a = np.array([[1, 2, 3], [4, 5, 6]])
+b = np.array([10, 20, 30])
+print(f"\n2D配列:\n{a}")
+print(f"1D配列: {b}")
+print(f"ブロードキャスト結果:\n{a + b}")</code></pre><br></p>
+<h3 id="ブロードキャスティングのルール">ブロードキャスティングのルール</h3>
+<br>
+<pre><code># ルール1: 次元数を合わせる
+a = np.ones((3, 4))
+b = np.ones(4)
+print(f"形状 {a.shape} + {b.shape} = {(a + b).shape}")
+
+# ルール2: 各次元のサイズが1または同じ
+a = np.ones((3, 1))
+b = np.ones((1, 4))
+print(f"\n形状 {a.shape} + {b.shape} = {(a + b).shape}")
+print(f"結果:\n{a + b}")
+
+# 実用例：正規化
+data = np.random.randint(0, 100, size=(5, 3))
+print(f"\n元のデータ:\n{data}")
+
+# 列ごとの平均と標準偏差
+mean = np.mean(data, axis=0)
+std = np.std(data, axis=0)
+
+# 正規化
+normalized = (data - mean) / std
+print(f"\n正規化後:\n{normalized}")
+print(f"確認（平均）: {np.mean(normalized, axis=0)}")
+print(f"確認（標準偏差）: {np.std(normalized, axis=0)}")</code></pre><br></p>
+<h2 id="10-線形代数">10. 線形代数</h2>
+<h3 id="基本的な行列演算">基本的な行列演算</h3>
+<br>
+<pre><code># 行列の作成
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+
+print(f"行列A:\n{A}")
+print(f"行列B:\n{B}")
+
+# 行列積
+print(f"\n行列積 A @ B:\n{A @ B}")
+
+# 転置
+print(f"\nAの転置:\n{A.T}")
+
+# トレース（対角和）
+print(f"\nAのトレース: {np.trace(A)}")
+
+# 行列式
+print(f"Aの行列式: {np.linalg.det(A):.2f}")</code></pre><br></p>
+<h3 id="逆行列と連立方程式">逆行列と連立方程式</h3>
+<br>
+<pre><code># 逆行列
+A = np.array([[2, 1], [1, 3]])
+A_inv = np.linalg.inv(A)
+print(f"A:\n{A}")
+print(f"\nAの逆行列:\n{A_inv}")
+print(f"\n確認 A @ A_inv:\n{A @ A_inv}")
+
+# 連立方程式を解く
+# 2x + y = 5
+# x + 3y = 7
+A = np.array([[2, 1], [1, 3]])
+b = np.array([5, 7])
+x = np.linalg.solve(A, b)
+print(f"\n連立方程式の解: x={x[0]:.2f}, y={x[1]:.2f}")
+
+# 検証
+print(f"検証: A @ x = {A @ x}")</code></pre><br></p>
+<h3 id="固有値と固有ベクトル">固有値と固有ベクトル</h3>
+<br>
+<pre><code># 対称行列
+A = np.array([[4, -2], [-2, 3]])
+eigenvalues, eigenvectors = np.linalg.eig(A)
+
+print(f"行列A:\n{A}")
+print(f"\n固有値: {eigenvalues}")
+print(f"\n固有ベクトル:\n{eigenvectors}")
+
+# 検証
+for i in range(len(eigenvalues)):
+    v = eigenvectors[:, i]
+    λ = eigenvalues[i]
+    print(f"\n固有値{λ:.2f}の検証:")
+    print(f"A @ v = {A @ v}")
+    print(f"λ * v = {λ * v}")</code></pre><br></p>
+<h3 id="特異値分解svd">特異値分解（SVD）</h3>
+<br>
+<pre><code># 行列の作成
+A = np.array([[1, 2, 3], [4, 5, 6]])
+U, s, VT = np.linalg.svd(A)
+
+print(f"元の行列A:\n{A}")
+print(f"\nU:\n{U}")
+print(f"\n特異値: {s}")
+print(f"\nV^T:\n{VT}")
+
+# 再構成
+S = np.zeros(A.shape)
+S[:len(s), :len(s)] = np.diag(s)
+reconstructed = U @ S @ VT
+print(f"\n再構成:\n{reconstructed}")</code></pre><br></p>
+<h2 id="11-ファイル入出力">11. ファイル入出力</h2>
+<h3 id="numpy形式での保存読み込み">NumPy形式での保存・読み込み</h3>
+<br>
+<pre><code># 配列の作成
+arr = np.random.rand(5, 5)
+print(f"元の配列:\n{arr}")
+
+# バイナリ形式で保存（.npy）
+np.save('array.npy', arr)
+
+# 読み込み
+loaded_arr = np.load('array.npy')
+print(f"\n読み込んだ配列:\n{loaded_arr}")
+
+# 複数の配列を保存（.npz）
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([[4, 5], [6, 7]])
+np.savez('arrays.npz', x=arr1, y=arr2)
+
+# 読み込み
+data = np.load('arrays.npz')
+print(f"\nx: {data['x']}")
+print(f"y:\n{data['y']}")
+
+# 圧縮保存
+np.savez_compressed('arrays_compressed.npz', arr1=arr1, arr2=arr2)</code></pre><br></p>
+<h3 id="テキスト形式での保存読み込み">テキスト形式での保存・読み込み</h3>
+<br>
+<pre><code># CSVとして保存
+arr = np.random.rand(4, 3)
+np.savetxt('data.csv', arr, delimiter=',', fmt='%.3f')
+
+# CSVから読み込み
+loaded = np.loadtxt('data.csv', delimiter=',')
+print(f"CSVから読み込み:\n{loaded}")
+
+# ヘッダー付きCSV
+header = "x,y,z"
+np.savetxt('data_with_header.csv', arr, delimiter=',', 
+           header=header, fmt='%.3f', comments='')
+
+# より複雑なデータの読み込み
+# genfromtxtは欠損値や異なるデータ型に対応
+data = np.genfromtxt('data_with_header.csv', delimiter=',', 
+                     names=True, dtype=None, encoding='utf-8')</code></pre><br></p>
+<h2 id="12-実践的な応用例">12. 実践的な応用例</h2>
+<h3 id="例1-画像処理">例1: 画像処理</h3>
+<br>
+<pre><code># 画像をグレースケールとして扱う
+# 仮想的な画像データ（実際はPILやOpenCVで読み込む）
+image = np.random.randint(0, 256, size=(100, 100), dtype=np.uint8)
+
+# 画像の統計情報
+print(f"画像サイズ: {image.shape}")
+print(f"最小輝度: {image.min()}")
+print(f"最大輝度: {image.max()}")
+print(f"平均輝度: {image.mean():.2f}")
+
+# 画像の変換
+# 反転
+inverted = 255 - image
+
+# 二値化
+threshold = 128
+binary = (image &gt; threshold).astype(np.uint8) * 255
+
+# フィルタリング（簡単な平滑化）
+kernel = np.ones((3, 3)) / 9
+# 実際の畳み込みはscipy.ndimageやOpenCVを使用</code></pre><br></p>
+<h3 id="例2-時系列データ分析">例2: 時系列データ分析</h3>
+<br>
+<pre><code># 時系列データの生成
+np.random.seed(42)
+days = 365
+trend = np.linspace(100, 200, days)
+seasonal = 10 * np.sin(2 * np.pi * np.arange(days) / 365)
+noise = np.random.normal(0, 5, days)
+sales = trend + seasonal + noise
+
+# 移動平均
+window = 7
+moving_avg = np.convolve(sales, np.ones(window)/window, mode='valid')
+
+# 統計量
+print(f"年間売上統計:")
+print(f"平均: {sales.mean():.2f}")
+print(f"標準偏差: {sales.std():.2f}")
+print(f"最大値: {sales.max():.2f}")
+print(f"最小値: {sales.min():.2f}")
+
+# 月ごとの集計（30日を1ヶ月と仮定）
+monthly_sales = sales[:360].reshape(12, 30).sum(axis=1)
+print(f"\n月別売上: {monthly_sales}")</code></pre><br></p>
+<h3 id="例3-機械学習の前処理">例3: 機械学習の前処理</h3>
+<br>
+<pre><code># データセットの準備
+np.random.seed(42)
+n_samples = 1000
+n_features = 5
+
+# 特徴量の生成
+X = np.random.randn(n_samples, n_features)
+# ターゲット（線形関係 + ノイズ）
+true_weights = np.array([1.5, -2.0, 0.5, 1.0, -0.5])
+y = X @ true_weights + np.random.randn(n_samples) * 0.1
+
+# データの標準化
+X_mean = X.mean(axis=0)
+X_std = X.std(axis=0)
+X_normalized = (X - X_mean) / X_std
+
+print(f"元のデータ統計:")
+print(f"平均: {X.mean(axis=0)}")
+print(f"標準偏差: {X.std(axis=0)}")
+
+print(f"\n標準化後:")
+print(f"平均: {X_normalized.mean(axis=0)}")
+print(f"標準偏差: {X_normalized.std(axis=0)}")
+
+# 訓練・テストデータの分割
+train_size = int(0.8 * n_samples)
+indices = np.random.permutation(n_samples)
+train_idx = indices[:train_size]
+test_idx = indices[train_size:]
+
+X_train, X_test = X[train_idx], X[test_idx]
+y_train, y_test = y[train_idx], y[test_idx]
+
+print(f"\n訓練データサイズ: {X_train.shape}")
+print(f"テストデータサイズ: {X_test.shape}")</code></pre><br></p>
+<h3 id="例4-数値シミュレーション">例4: 数値シミュレーション</h3>
+<br>
+<pre><code># モンテカルロ法による円周率の推定
+n_points = 1000000
+points = np.random.uniform(-1, 1, size=(n_points, 2))
+
+# 原点からの距離
+distances = np.sqrt(np.sum(points**2, axis=1))
+
+# 単位円内の点の数
+inside_circle = np.sum(distances &lt;= 1)
+
+# 円周率の推定
+pi_estimate = 4 * inside_circle / n_points
+print(f"推定された円周率: {pi_estimate}")
+print(f"実際の円周率: {np.pi}")
+print(f"誤差: {abs(pi_estimate - np.pi):.6f}")
+
+# ランダムウォーク
+steps = 1000
+walk = np.random.choice([-1, 1], size=steps)
+position = np.cumsum(walk)
+
+print(f"\nランダムウォーク:")
+print(f"最終位置: {position[-1]}")
+print(f"最大到達点: {position.max()}")
+print(f"最小到達点: {position.min()}")</code></pre><br></p>
+<h2 id="まとめ">まとめ</h2>
+<br>
+NumPyは科学計算の基礎となるライブラリで、以下の重要な機能を提供します：<br></p>
+<ul>
+<li><strong>高速な配列演算</strong>: C言語実装による高速処理</li>
+<li><strong>ブロードキャスティング</strong>: 異なる形状の配列間での効率的な演算</li>
+<li><strong>豊富な数学関数</strong>: 統計、線形代数、フーリエ変換など</li>
+<li><strong>メモリ効率</strong>: 連続したメモリ配置による効率的なデータ管理</li>
+<li><strong>他のライブラリとの連携</strong>: pandas、scikit-learn、TensorFlowなど</li>
+</ul>
+<h3 id="学習のポイント">学習のポイント</h3>
+<ul>
+<li>まずは基本的な配列操作（作成、インデックス、スライス）を習得</li>
+<li>ブロードキャスティングの理解は必須</li>
+<li>実際のデータで練習を重ねる</li>
+<li>他のライブラリ（pandas、matplotlib）と組み合わせて使用</li>
+</ul>
+<h3 id="次のステップ">次のステップ</h3>
+<ul>
+<li><strong>pandas</strong>: データ分析のためのライブラリ</li>
+<li><strong>matplotlib/seaborn</strong>: データ可視化</li>
+<li><strong>scikit-learn</strong>: 機械学習</li>
+<li><strong>scipy</strong>: 科学計算の拡張機能</li>
+</ul>
+<br>
+NumPyをマスターすることで、Pythonでのデータサイエンスや科学計算の基礎が身につきます。実際のプロジェクトで使いながら、徐々に高度な機能も習得していきましょう。</p>
+    </div>
+    <a href="#top" class="back-to-top">↑ トップへ</a>
+    <script>
+        // シンタックスハイライト用の簡単な処理
+        document.addEventListener('DOMContentLoaded', function() {
+            // Python キーワードのハイライト
+            const keywords = ['import', 'from', 'def', 'class', 'return', 'if', 'else', 'elif', 
+                            'for', 'while', 'in', 'True', 'False', 'None', 'and', 'or', 'not',
+                            'try', 'except', 'finally', 'with', 'as', 'pass', 'break', 'continue',
+                            'print', 'np', 'numpy', 'array', 'shape', 'dtype'];
+            
+            const codeBlocks = document.querySelectorAll('pre code');
+            codeBlocks.forEach(block => {
+                let html = block.innerHTML;
+                
+                // 文字列をハイライト（シングルクォートとダブルクォート）
+                html = html.replace(/('[^']*'|"[^"]*")/g, '<span style="color: #e74c3c;">$1</span>');
+                
+                // 数値をハイライト
+                html = html.replace(/(\d+\.?\d*)/g, '<span style="color: #e67e22;">$1</span>');
+                
+                // コメントをハイライト
+                html = html.replace(/(#[^
+]*)/g, '<span style="color: #95a5a6;">$1</span>');
+                
+                // キーワードをハイライト
+                keywords.forEach(keyword => {
+                    const regex = new RegExp('\b(' + keyword + ')\b', 'g');
+                    html = html.replace(regex, '<span style="color: #3498db; font-weight: bold;">$1</span>');
+                });
+                
+                block.innerHTML = html;
+            });
+            
+            // スクロールでトップへ戻るボタンの表示/非表示
+            const backToTop = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTop.style.display = 'block';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
