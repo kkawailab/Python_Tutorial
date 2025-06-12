@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}投稿一覧 - Flask チュートリアル{% endblock %}
+
+{% block content %}
+<h1>投稿一覧</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="actions">
+    <a href="{{ url_for('add_post') }}" class="btn">新規投稿</a>
+    <a href="{{ url_for('users') }}" class="btn">ユーザー一覧</a>
+    <a href="{{ url_for('init_db') }}" class="btn" onclick="return confirm('データベースを初期化しますか？')">データベース初期化</a>
+</div>
+
+{% if posts %}
+    <div class="posts">
+        {% for post in posts %}
+            <article class="post">
+                <h2><a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a></h2>
+                <div class="post-meta">
+                    投稿者: <a href="{{ url_for('user_detail', user_id=post.author.id) }}">{{ post.author.username }}</a> | 
+                    投稿日: {{ post.created_at|datetime }}
+                </div>
+                <p>{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>まだ投稿がありません。</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,6 @@
+{% macro render_field(name, label, type='text', required=false) %}
+<div class="form-group">
+    <label for="{{ name }}">{{ label }}</label>
+    <input type="{{ type }}" id="{{ name }}" name="{{ name }}" {% if required %}required{% endif %}>
+</div>
+{% endmacro %}

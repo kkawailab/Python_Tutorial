@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}フォーム例 - Flask チュートリアル{% endblock %}
+
+{% block content %}
+<h1>Flaskでのフォーム処理</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<h2>サンプルフォーム一覧</h2>
+<ul>
+    <li><a href="{{ url_for('register') }}">ユーザー登録フォーム（WTForms使用）</a></li>
+    <li><a href="{{ url_for('contact') }}">お問い合わせフォーム（WTForms使用）</a></li>
+    <li><a href="{{ url_for('simple_form') }}">シンプルなフォーム（通常のHTML）</a></li>
+    <li><a href="{{ url_for('upload_file') }}">ファイルアップロード</a></li>
+</ul>
+{% endblock %}

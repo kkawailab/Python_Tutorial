@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}ファイルアップロード - Flask チュートリアル{% endblock %}
+
+{% block content %}
+<h1>ファイルアップロード</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">ファイルを選択:</label>
+        <input type="file" id="file" name="file" required>
+    </div>
+    
+    <button type="submit">アップロード</button>
+</form>
+
+<div class="info">
+    <h3>注意事項</h3>
+    <ul>
+        <li>アップロードできるファイルサイズには制限があります</li>
+        <li>許可されたファイル形式のみアップロード可能です</li>
+        <li>実際のアプリケーションでは、セキュリティ対策が必要です</li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}ホーム - Flask チュートリアル{% endblock %}
+
+{% block content %}
+<h1>Flask チュートリアルへようこそ！</h1>
+
+<h2>変数の表示</h2>
+<p>こんにちは、{{ name }}さん！</p>
+<p>現在の時刻: {{ current_time }}</p>
+
+<h2>条件分岐</h2>
+{% if user_logged_in %}
+    <p>ログイン済みです</p>
+{% else %}
+    <p>ログインしてください</p>
+{% endif %}
+
+<h2>ループ処理</h2>
+<ul>
+    {% for item in items %}
+        <li>{{ loop.index }}. {{ item }}</li>
+    {% endfor %}
+</ul>
+
+<h2>フィルターの使用</h2>
+<p>大文字に変換: {{ message|upper }}</p>
+<p>文字数: {{ message|length }}文字</p>
+<p>デフォルト値: {{ undefined_var|default('値が設定されていません') }}</p>
+{% endblock %}

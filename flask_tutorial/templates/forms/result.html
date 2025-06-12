@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}フォーム送信結果 - Flask チュートリアル{% endblock %}
+
+{% block content %}
+<h1>フォーム送信結果</h1>
+
+<h2>入力された情報</h2>
+<ul>
+    <li><strong>名前:</strong> {{ name }}</li>
+    <li><strong>年齢:</strong> {{ age }}</li>
+    <li><strong>趣味:</strong>
+        {% if hobbies %}
+            <ul>
+                {% for hobby in hobbies %}
+                    <li>{{ hobby }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            なし
+        {% endif %}
+    </li>
+</ul>
+
+<a href="{{ url_for('simple_form') }}">戻る</a>
+{% endblock %}

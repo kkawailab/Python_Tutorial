@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }}のプロフィール{% endblock %}
+
+{% block content %}
+<h1>{{ user.username }}さんのプロフィール</h1>
+
+<div class="profile-info">
+    <p><strong>ユーザー名:</strong> {{ user.username }}</p>
+    <p><strong>メールアドレス:</strong> {{ user.email }}</p>
+    <p><strong>登録日:</strong> {{ user.joined_date }}</p>
+</div>
+
+<h2>投稿記事</h2>
+{% if user.posts %}
+    <div class="posts">
+        {% for post in user.posts %}
+            <article>
+                <h3>{{ post.title }}</h3>
+                <p class="post-date">投稿日: {{ post.date }}</p>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>まだ投稿がありません。</p>
+{% endif %}
+{% endblock %}

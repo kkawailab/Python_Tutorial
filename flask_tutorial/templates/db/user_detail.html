@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }}のプロフィール - Flask チュートリアル{% endblock %}
+
+{% block content %}
+<h1>{{ user.username }}のプロフィール</h1>
+
+<div class="user-info">
+    <p><strong>ユーザー名:</strong> {{ user.username }}</p>
+    <p><strong>メールアドレス:</strong> {{ user.email }}</p>
+    <p><strong>登録日:</strong> {{ user.created_at|datetime }}</p>
+    <p><strong>投稿数:</strong> {{ user.posts|length }}件</p>
+</div>
+
+<h2>投稿一覧</h2>
+{% if user.posts %}
+    <div class="user-posts">
+        {% for post in user.posts %}
+            <article class="post-summary">
+                <h3><a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a></h3>
+                <p class="post-date">投稿日: {{ post.created_at|datetime }}</p>
+                <p>{{ post.content[:100] }}{% if post.content|length > 100 %}...{% endif %}</p>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>まだ投稿がありません。</p>
+{% endif %}
+
+<div class="actions">
+    <a href="{{ url_for('users') }}" class="btn">ユーザー一覧へ戻る</a>
+</div>
+{% endblock %}
